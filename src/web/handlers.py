@@ -578,21 +578,35 @@ class CharacterViewHandler(jsonhandler.JsonHandler):
         if not user and delete_user_by_id:
             user = {"user_id": delete_user_by_id}
 
+        # admin when has admin permission, but not consider admin when updated by himself
+        updated_by_admin = self.is_permission_admin() and user.get("user_id") != self.current_user.get("user_id")
+
         self._db.update_user(user, character, delete_user_by_id=delete_user_by_id,
-                             delete_character_by_id=delete_character_by_id)
+                             delete_character_by_id=delete_character_by_id, updated_by_admin=updated_by_admin)
+
+        self.write({"status": "success"})
+        self.finish()
 
 
 class ManualHandler(jsonhandler.JsonHandler):
     @tornado.web.asynchronous
     def get(self):
-        self.write(self._manual.get_str_all())
+        str_value = self._manual.get_str_all(is_admin=False)
+        self.write(str_value)
         self.finish()
 
 
-class LoreHandler(jsonhandler.JsonHandler):
+class ManualAdminHandler(jsonhandler.JsonHandler):
     @tornado.web.asynchronous
     def get(self):
-        self.write(self._lore.get_str_all())
+        if not self.is_permission_admin():
+            print("Insufficient permissions from %s" % self.request.remote_ip, file=sys.stderr)
+            # Forbidden
+            self.set_status(403)
+            self.send_error(403)
+            raise tornado.web.Finish()
+        str_value = self._manual.get_str_all(is_admin=True)
+        self.write(str_value)
         self.finish()
 
 
@@ -754,11 +768,10 @@ class EditorCmdInfoHandler(jsonhandler.JsonHandler):
         file_url = self._doc_generator_gspread.get_url()
         email_google_service = self._doc_generator_gspread.get_email_service()
         is_auth = self._doc_generator_gspread.is_auth()
-        can_generate = bool(doc_generator and
-                            not self._doc_generator_gspread.has_error() and
-                            not doc_generator.has_error() and
-                            has_access_perm and is_auth
-                            )
+        can_generate = bool(doc_generator and has_access_perm and is_auth)
+
+        last_updated_date = self._manual.get_last_date_updated()
+        last_updated_date_for_js = last_updated_date * 1000
 
         info = {
             "file_url": file_url,
@@ -766,7 +779,8 @@ class EditorCmdInfoHandler(jsonhandler.JsonHandler):
             "user_has_writer_perm": has_user_writer_perm,
             "has_access_perm": has_access_perm,
             "email_google_service": email_google_service,
-            "can_generate": can_generate
+            "can_generate": can_generate,
+            "last_local_doc_update": last_updated_date_for_js
         }
 
         if self._doc_generator_gspread.has_error():
@@ -876,15 +890,73 @@ class EditorCmdGenerateAndSaveHandler(jsonhandler.JsonHandler):
         status = doc_generator.generate_doc()
         if status:
             document = doc_generator.get_generated_doc()
+            info = {}
             if "manual" in document:
                 doc_part = document.get("manual")
-                self._manual.update({"manual": doc_part}, save=True)
+                info["manual"] = doc_part
+                # self._manual.update({"manual": doc_part}, save=True)
             if "lore" in document:
                 doc_part = document.get("lore")
-                self._lore.update({"lore": doc_part}, save=True)
+                info["lore"] = doc_part
+                # self._manual.update({"lore": doc_part}, save=True)
+            if "schema_user" in document or "schema_char" in document or "form_user" in document \
+                    or "form_char" in document or "admin_form_user" in document or "admin_form_char" in document:
+                dct_char_rule = {}
+                if "schema_user" in document:
+                    doc_part = document.get("schema_user")
+                    dct_char_rule["schema_user"] = doc_part
+                if "schema_char" in document:
+                    doc_part = document.get("schema_char")
+                    dct_char_rule["schema_char"] = doc_part
+                if "form_user" in document:
+                    doc_part = document.get("form_user")
+                    dct_char_rule["form_user"] = doc_part
+                if "form_char" in document:
+                    doc_part = document.get("form_char")
+                    dct_char_rule["form_char"] = doc_part
+                if "admin_form_user" in document:
+                    doc_part = document.get("admin_form_user")
+                    dct_char_rule["admin_form_user"] = doc_part
+                if "admin_form_char" in document:
+                    doc_part = document.get("admin_form_char")
+                    dct_char_rule["admin_form_char"] = doc_part
+
+                info["char_rule"] = dct_char_rule
+
+            info["point"] = document["point"]
+            info["skill_manual"] = document["skill_manual"]
+
+            # Link manual and form
+            info = self._manual.generate_link(info)
+
+            # Write to database
+            self._manual.update(info, save=True)
             status = {"status": "Generated with success. Database updated."}
         else:
             status = doc_generator.get_error(force_error=True)
+
+        self.write(status)
+        self.finish()
+
+
+class CharacterApprobationHandler(jsonhandler.JsonHandler):
+    @tornado.web.asynchronous
+    @tornado.web.authenticated
+    def post(self):
+        if not self.is_permission_admin():
+            print("Insufficient permissions from %s" % self.request.remote_ip, file=sys.stderr)
+            # Forbidden
+            self.set_status(403)
+            self.send_error(403)
+            raise tornado.web.Finish()
+
+        self.prepare_json()
+
+        user_id = self.get_argument("user_id")
+        character_name = self.get_argument("character_name")
+        approbation_status = self.get_argument("approbation_status")
+
+        status = self._db.set_approbation(user_id, character_name, approbation_status)
 
         self.write(status)
         self.finish()

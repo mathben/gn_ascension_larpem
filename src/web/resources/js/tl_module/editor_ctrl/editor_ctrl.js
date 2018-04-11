@@ -6,7 +6,7 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
     $scope.model_editor = {
       is_ctrl_ready: false,
 
-      modulestate: {
+      module_state: {
         has_error: false,
         error: ""
       },
@@ -17,7 +17,9 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
         user_has_writer_perm: false,
         has_access_perm: false,
         email_google_service: "",
-        can_generate: false
+        can_generate: false,
+        last_local_doc_update: 0,
+        string_last_local_doc_update: ""
       },
 
       is_updating_file_url: false,
@@ -52,6 +54,14 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
   };
   $scope.init_model();
 
+  $scope.$watch("model_editor.info.last_local_doc_update", function (value) {
+    var date_updated = new Date();
+    date_updated.setTime(value);
+    // console.debug(value);
+    // console.debug(date_updated.toString());
+    $scope.model_editor.info.string_last_local_doc_update = date_updated.toString();
+  }, true);
+
   // Get editor info
   $scope.update_editor = function (e) {
     $scope.init_model();
@@ -60,14 +70,15 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
       method: "get",
       url: "/cmd/editor/get_info",
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      timeout: 5000
+      timeout: 60000
     }).then(function (response/*, status, headers, config*/) {
       $scope.model_editor.info = response.data;
+      console.info(response.data);
       $scope.model_editor.is_ctrl_ready = true;
 
       if ("error" in $scope.model_editor.info) {
-        $scope.model_editor.modulestate.has_error = true;
-        $scope.model_editor.modulestate.error = $scope.model_editor.info.error;
+        $scope.model_editor.module_state.has_error = true;
+        $scope.model_editor.module_state.error = $scope.model_editor.info.error;
       }
     }, function errorCallback(response) {
       console.error(response);
@@ -88,7 +99,7 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
   $scope.update_editor();
 
   // Send request to receive writer permission
-  $scope.send_writingpermission = function (e) {
+  $scope.send_writing_permission = function (e) {
     if ($scope.model_editor.is_sharing_doc) {
       return;
     }
@@ -99,7 +110,7 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
       method: "post",
       url: "/cmd/editor/add_generator_share",
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      timeout: 5000
+      timeout: 60000
     }).then(function (response/*, status, headers, config*/) {
       console.info(response);
       $scope.model_editor.info.user_has_writer_perm = true;
@@ -146,7 +157,7 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
       method: "post",
       url: "/cmd/editor/generate_and_save",
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      timeout: 10000
+      timeout: 60000
     }).then(function (response/*, status, headers, config*/) {
       console.info(response);
       $scope.model_editor.is_generating_doc = false;
@@ -193,7 +204,7 @@ characterApp.controller("editor_ctrl", ["$scope", "$q", "$http", "$window", /*"$
       url: "/cmd/editor/update_file_url",
       data: data,
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      timeout: 5000
+      timeout: 60000
     }).then(function (response/*, status, headers, config*/) {
       console.info(response);
       $scope.model_editor.is_updating_file_url = false;
