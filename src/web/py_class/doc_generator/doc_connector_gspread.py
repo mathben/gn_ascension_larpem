@@ -32,7 +32,7 @@ class DocType(Enum):
             ]
         elif self.value == self.FORM.value:
             header = [
-                "Level", "Key", "Placeholder", "Type", "Options", "Value", "Name", "Category", "Add", "Style"
+                "Level", "Key", "Placeholder", "Type", "Options", "Value", "Name", "Category", "Add", "Style", "Admin"
             ]
         elif self.value == self.SCHEMA.value:
             header = [
@@ -85,10 +85,10 @@ class DocConnectorGSpread:
             {"type": DocType.DOC, "name": "lore", "permission": ["anyone"]},
             {"type": DocType.SCHEMA, "name": "schema_user", "permission": ["user"]},
             {"type": DocType.SCHEMA, "name": "schema_char", "permission": ["user"]},
-            {"type": DocType.FORM, "name": "form_user", "permission": ["user"]},
-            {"type": DocType.FORM, "name": "form_char", "permission": ["user"]},
-            {"type": DocType.FORM, "name": "admin_form_user", "permission": ["admin"]},
-            {"type": DocType.FORM, "name": "admin_form_char", "permission": ["admin"]},
+            {"type": DocType.FORM, "name": "form_user", "permission": ["user"], "is_admin": False},
+            {"type": DocType.FORM, "name": "form_char", "permission": ["user"], "is_admin": False},
+            {"type": DocType.FORM, "name": "form_user", "permission": ["admin"], "is_admin": True},
+            {"type": DocType.FORM, "name": "form_char", "permission": ["admin"], "is_admin": True},
         ]
 
     def has_error(self):
@@ -250,7 +250,7 @@ class DocConnectorGSpread:
             # Parse sheet
             cb = sheet_type.get_cb_parser(self)
             if cb:
-                info = cb(sheet_name, all_values)
+                info = cb(sheet_info, sheet_name, all_values)
             else:
                 self._error = "Internal error, cannot find method to parse the sheet with type %s." % sheet_type
                 print(self._error, file=sys.stderr)
@@ -261,14 +261,17 @@ class DocConnectorGSpread:
                 return False
 
             # Compilation of unique result
-            dct_doc[sheet_name] = info
+            is_form_admin = sheet_info.get("is_admin", False)
+            adapted_sheet_name = sheet_name if not is_form_admin else "admin_" + sheet_name
+            dct_doc[adapted_sheet_name] = info
 
         self._generated_doc = dct_doc
         return True
 
-    def _parse_sheet_type_schema(self, doc_sheet_name, all_values):
+    def _parse_sheet_type_schema(self, sheet_info, doc_sheet_name, all_values):
         """
         Read each line of the doc from the spreadsheet and generate the structure.
+        :param sheet_info: Sheet information
         :param doc_sheet_name: Sheet name
         :param all_values: List of all row from the spreadsheet
         :return: Dict of schema or None when got error
@@ -282,8 +285,8 @@ class DocConnectorGSpread:
         # This is use to keep reference on last object dependant on level
         lst_level_object = []
         for level, name, s_type, title, min_length, pattern, required, min_items, max_items, unique_items in lst_line:
-            debug_values = (
-                level, name, s_type, title, min_length, pattern, required, min_items, max_items, unique_items)
+            # debug_values = (
+            #     level, name, s_type, title, min_length, pattern, required, min_items, max_items, unique_items)
             line_number += 1
 
             # Validation section
@@ -431,9 +434,10 @@ class DocConnectorGSpread:
 
         return dct_value
 
-    def _parse_sheet_type_form(self, doc_sheet_name, all_values):
+    def _parse_sheet_type_form(self, sheet_info, doc_sheet_name, all_values):
         """
         Read each line of the doc from the spreadsheet and generate the structure.
+        :param sheet_info: Sheet information
         :param doc_sheet_name: Sheet name
         :param all_values: List of all row from the spreadsheet
         :return: List of section to the doc or None when got error
@@ -443,11 +447,22 @@ class DocConnectorGSpread:
         lst_line = all_values[1:]
         line_value = {}
 
+        is_form_admin = sheet_info.get("is_admin", False)
+
         # This is use to keep reference on last object dependant on level
         lst_level_object = [lst_value]
-        for level, s_key, placeholder, s_type, options, value, name, category, add, style in lst_line:
-            # debug_values = (level, s_key, placeholder, s_type, options, value, name, category, add, style)
+        for level, s_key, placeholder, s_type, options, value, name, category, add, style, is_admin in lst_line:
+            # debug_values = (level, s_key, placeholder, s_type, options, value, name, category, add, style, is_admin)
             line_number += 1
+
+            if is_admin == "TRUE" or is_admin == "VRAI":
+                is_admin = True
+            else:
+                is_admin = False
+
+            # Ignore admin field when sheet is not admin
+            if not is_form_admin and is_admin:
+                continue
 
             # Validation section
             # Level is obligated
@@ -608,9 +623,10 @@ class DocConnectorGSpread:
 
         return lst_value
 
-    def _parse_sheet_type_doc(self, doc_sheet_name, all_values):
+    def _parse_sheet_type_doc(self, sheet_info, doc_sheet_name, all_values):
         """
         Read each line of the doc from the spreadsheet and generate the structure.
+        :param sheet_info: Sheet information
         :param doc_sheet_name: Sheet name
         :param all_values: List of all row from the spreadsheet
         :return: List of section to the doc or None when got error
