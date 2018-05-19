@@ -58,7 +58,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
 
   // fill user and character schema and form
   $scope.update_character = function (e) {
-    var char_rule_url = $scope.is_admin ? "/cmd/char_rule_admin" : "/cmd/char_rule";
+    var char_rule_url = $scope.is_admin ? "/cmd/manual_admin" : "/cmd/manual";
     $http({
       method: "get",
       url: char_rule_url,
@@ -66,7 +66,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       timeout: 5000
     }).then(function (response/*, status, headers, config*/) {
       console.info(response);
-      var data = response.data;
+      var data = response.data.char_rule;
       $scope.schema_user = data.schema_user;
       $scope.schema_char = data.schema_char;
       $scope.form_user = data.form_user;
