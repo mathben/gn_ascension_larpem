@@ -56,9 +56,9 @@
         </div>
         <div>
           Xp consommé : {{! countTotalCostXp() }}
-          <a class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
+          <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
              ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
-          </a>
+          </span>
         </div>
         <!--<hr>-->
         <!--<div>-->
@@ -106,9 +106,9 @@
         </div>
         <div ng-show="isMobile()">
           Xp consommé : {{! countTotalCostXp() }}
-          <a class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
+          <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
              ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
-          </a>
+          </span>
         </div>
         <p>
           Approbation de la fiche :
@@ -149,15 +149,15 @@
 
       </form>
 
-      <a ng-show="status_send.enabled" ng-style="status_send.is_error ? {'color': 'red'} : {'color': 'green'}">
+      <span ng-show="status_send.enabled" ng-style="status_send.is_error ? {'color': 'red'} : {'color': 'green'}">
         {{! status_send.text }}
-      </a>
+      </span>
 
       <div ng-show="isMobile()">
         Xp consommé : {{! countTotalCostXp() }}
-        <a class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
+        <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
            ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
-        </a>
+        </span>
       </div>
     </div> <!-- end div form write -->
 
