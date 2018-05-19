@@ -27,12 +27,13 @@ class DocType(Enum):
         """
         if self.value == self.DOC.value:
             header = [
-                "Level", "Title", "Title HTML", "Description", "Bullet Description", "Second Bullet Description",
-                "Under Level Color"
+                "Level", "Key", "Title", "Description", "Bullet Description", "Second Bullet Description",
+                "Under Level Color", "Model", "Point", "HidePlayer", "Admin"
             ]
         elif self.value == self.FORM.value:
             header = [
-                "Level", "Key", "Placeholder", "Type", "Options", "Value", "Name", "Category", "Add", "Style", "Admin"
+                "Level", "Key", "Placeholder", "Type", "Options", "Value", "Name", "Category", "Add", "Style", "Model",
+                "ReadByPlayer", "ReadOnlyPlayer", "Admin"
             ]
         elif self.value == self.SCHEMA.value:
             header = [
@@ -284,9 +285,18 @@ class DocConnectorGSpread:
 
         # This is use to keep reference on last object dependant on level
         lst_level_object = []
-        for level, name, s_type, title, min_length, pattern, required, min_items, max_items, unique_items in lst_line:
-            # debug_values = (
-            #     level, name, s_type, title, min_length, pattern, required, min_items, max_items, unique_items)
+        for lst_item in lst_line:
+            level = lst_item[0]
+            name = lst_item[1]
+            s_type = lst_item[2]
+            title = lst_item[3]
+            min_length = lst_item[4]
+            pattern = lst_item[5]
+            required = lst_item[6]
+            min_items = lst_item[7]
+            max_items = lst_item[8]
+            unique_items = lst_item[9]
+
             line_number += 1
 
             # Validation section
@@ -419,6 +429,8 @@ class DocConnectorGSpread:
             # Fill data in line_value
             if s_type:
                 line_value["type"] = s_type
+            if pattern:
+                line_value["pattern"] = pattern
             if title:
                 line_value["title"] = title
             if required:
@@ -451,8 +463,22 @@ class DocConnectorGSpread:
 
         # This is use to keep reference on last object dependant on level
         lst_level_object = [lst_value]
-        for level, s_key, placeholder, s_type, options, value, name, category, add, style, is_admin in lst_line:
-            # debug_values = (level, s_key, placeholder, s_type, options, value, name, category, add, style, is_admin)
+        for lst_item in lst_line:
+            level = lst_item[0]
+            s_key = lst_item[1]
+            placeholder = lst_item[2]
+            s_type = lst_item[3]
+            options = lst_item[4]
+            value = lst_item[5]
+            name = lst_item[6]
+            category = lst_item[7]
+            add = lst_item[8]
+            style = lst_item[9]
+            model = lst_item[10]
+            read_by_player = lst_item[11]
+            read_only_player = lst_item[12]
+            is_admin = lst_item[13]
+
             line_number += 1
 
             if is_admin == "TRUE" or is_admin == "VRAI":
@@ -732,16 +758,20 @@ class DocConnectorGSpread:
         """
 
         level = row[0]
-        title = row[1]
-        title_html = row[2]
+        key = row[1]
+        title = row[2]
         description = row[3]
         bullet_description = row[4]
         second_bullet_description = row[5]
         under_level_color = row[6]
+        model = row[7]
+        point = row[8]
+        hide_player = row[9]
+        admin = row[10]
 
         # Check error
-        if title_html and not title:
-            msg = "Need title when fill title html for H%s." % level
+        if title and not key:
+            msg = "Need key when fill title for H%s." % level
             self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
             print(self._error, file=sys.stderr)
             return False
@@ -766,9 +796,9 @@ class DocConnectorGSpread:
 
         # Begin to fill this section
         # If contain title, it's a new section. Else, take the last on the list.
-        if title:
+        if key:
             # New section
-            section = {"title": title}
+            section = {"title": key}
             lst_section.append(section)
         else:
             section = lst_section[-1]
@@ -782,13 +812,13 @@ class DocConnectorGSpread:
                 return False
 
         # Special title, contain html to improve view
-        if title_html:
+        if title:
             if "title_html" in section:
                 msg = "Cannot manage many title_html for H%s." % level
                 self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
                 print(self._error, file=sys.stderr)
                 return False
-            section["title_html"] = title_html
+            section["title_html"] = title
 
         # Description can be append for the same section
         if description:
