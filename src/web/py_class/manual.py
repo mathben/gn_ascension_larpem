@@ -55,9 +55,4 @@ class Manual(object):
 
     @staticmethod
     def generate_link(manual):
-        print("allo")
-        dct_char_rule = manual.get("char_rule", {})
-        for key, value in dct_char_rule.values():
-            pass
-
         return manual

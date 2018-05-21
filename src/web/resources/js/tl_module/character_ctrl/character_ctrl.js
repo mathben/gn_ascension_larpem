@@ -29,6 +29,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.new_character = false;
   $scope.no_character = true;
 
+  $scope.model_database = {};
   $scope.model_user = {};
   $scope.schema_user = {};
   $scope.form_user = [];
@@ -71,6 +72,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       $scope.schema_char = data.schema_char;
       $scope.form_user = data.form_user;
       $scope.form_char = data.form_char;
+      $scope.model_database = response.data;
     }, function errorCallback(response) {
       console.error(response);
     });
@@ -217,7 +219,138 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
 
   $scope.$watch("model_char", function (value) {
     if (value) {
+      console.info($scope.schema_char);
+      console.info("info");
       $scope.prettyModelChar = JSON.stringify(value, undefined, 2);
+      // Update all documentation
+      var manual = $scope.model_database.manual;
+      for (var key in $scope.schema_char.properties) {
+        var find_key = false;
+        var manual_doc = "";
+        var point = "";
+
+        // Find appropriate documentation
+        for (var i1 = 0; i1 < manual.length; i1++) {
+          var sec1 = manual[i1];
+
+          // Duplicated code to find key
+          if (isDefined(sec1.model) && sec1.model == key) {
+            find_key = true;
+
+            if (isDefined(sec1.description)) {
+              manual_doc = sec1.description;
+            }
+            if (isDefined(sec1.point)) {
+              point = sec1.point;
+            }
+            break;
+          }
+          // END Duplicated code to find key
+
+          if (sec1.section) {
+            for (var i2 = 0; i2 < sec1.section.length; i2++) {
+              var sec2 = sec1.section[i2];
+
+              // Duplicated code to find key
+              if (isDefined(sec2.model) && sec2.model == key) {
+                find_key = true;
+
+                if (isDefined(sec2.description)) {
+                  manual_doc = sec2.description;
+                }
+                if (isDefined(sec2.point)) {
+                  point = sec2.point;
+                }
+                break;
+              }
+              // END Duplicated code to find key
+
+              if (sec2.section) {
+                for (var i3 = 0; i3 < sec2.section.length; i3++) {
+                  var sec3 = sec2.section[i3];
+
+                  // Duplicated code to find key
+                  if (isDefined(sec3.model) && sec3.model == key) {
+                    find_key = true;
+
+                    if (isDefined(sec3.description)) {
+                      manual_doc = sec3.description;
+                    }
+                    if (isDefined(sec3.point)) {
+                      point = sec3.point;
+                    }
+                    break;
+                  }
+                  // END Duplicated code to find key
+
+                  if (sec3.section) {
+                    for (var i4 = 0; i4 < sec3.section.length; i4++) {
+                      var sec4 = sec3.section[i4];
+
+                      // Duplicated code to find key
+                      if (isDefined(sec4.model) && sec4.model == key) {
+                        find_key = true;
+
+                        if (isDefined(sec4.description)) {
+                          manual_doc = sec4.description;
+                        }
+                        if (isDefined(sec4.point)) {
+                          point = sec4.point;
+                        }
+                        break;
+                      }
+                      // END Duplicated code to find key
+
+                      if (sec4.section) {
+                        for (var i5 = 0; i5 < sec4.section.length; i5++) {
+                          var sec5 = sec4.section[i5];
+
+                          // Duplicated code to find key
+                          if (isDefined(sec5.model) && sec5.model == key) {
+                            find_key = true;
+
+                            if (isDefined(sec5.description)) {
+                              manual_doc = sec5.description;
+                            }
+                            if (isDefined(sec5.point)) {
+                              point = sec5.point;
+                            }
+                            break;
+                          }
+                          // END Duplicated code to find key
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        if (find_key) {
+          console.info("Find key");
+          $scope.schema_char.properties[key].description = point;
+
+        } else {
+          continue
+        }
+      }
+      // $scope.$apply();
+      var copy = $scope.schema_char;
+      var copy2 = $scope.form_char;
+      $scope.schema_char = {
+        "type": "object",
+        "properties": {
+          "blank": {}
+        }
+      };
+      $scope.form_char = [];
+
+      $scope.schema_char = copy;
+      $scope.form_char = copy2;
+
+      console.info($scope.schema_char);
     }
     // todo : update player
     // $scope.player = value;
