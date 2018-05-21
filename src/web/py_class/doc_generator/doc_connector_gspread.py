@@ -27,18 +27,18 @@ class DocType(Enum):
         """
         if self.value == self.DOC.value:
             header = [
-                "Level", "Key", "Title", "Description", "Bullet Description", "Second Bullet Description",
-                "Under Level Color", "Model", "Point", "HidePlayer", "Admin"
+                "Level", "Admin", "Key", "Title", "Description", "Bullet Description", "Second Bullet Description",
+                "Under Level Color", "Sub Key", "Model", "Point", "HidePlayer"
             ]
         elif self.value == self.FORM.value:
             header = [
-                "Level", "Key", "Placeholder", "Type", "Options", "Value", "Name", "Category", "Add", "Style", "Model",
-                "ReadByPlayer", "ReadOnlyPlayer", "Admin"
+                "Level", "Admin", "Key", "Placeholder", "Type", "Options", "Value", "Name", "Category", "Add", "Style",
+                "Model", "ReadByPlayer", "ReadOnlyPlayer"
             ]
         elif self.value == self.SCHEMA.value:
             header = [
                 "Level", "Name", "Type", "Title", "minLength", "pattern", "required", "minItems", "maxItems",
-                "uniqueItems"
+                "uniqueItems", "Description"
             ]
         else:
             header = []
@@ -296,6 +296,7 @@ class DocConnectorGSpread:
             min_items = lst_item[7]
             max_items = lst_item[8]
             unique_items = lst_item[9]
+            description = lst_item[10]
 
             line_number += 1
 
@@ -443,6 +444,8 @@ class DocConnectorGSpread:
                 line_value["maxItems"] = max_items
             if type(unique_items) is bool:
                 line_value["uniqueItems"] = unique_items
+            if description:
+                line_value["description"] = description
 
         return dct_value
 
@@ -465,19 +468,19 @@ class DocConnectorGSpread:
         lst_level_object = [lst_value]
         for lst_item in lst_line:
             level = lst_item[0]
-            s_key = lst_item[1]
-            placeholder = lst_item[2]
-            s_type = lst_item[3]
-            options = lst_item[4]
-            value = lst_item[5]
-            name = lst_item[6]
-            category = lst_item[7]
-            add = lst_item[8]
-            style = lst_item[9]
-            model = lst_item[10]
-            read_by_player = lst_item[11]
-            read_only_player = lst_item[12]
-            is_admin = lst_item[13]
+            is_admin = lst_item[1]
+            s_key = lst_item[2]
+            placeholder = lst_item[3]
+            s_type = lst_item[4]
+            options = lst_item[5]
+            value = lst_item[6]
+            name = lst_item[7]
+            category = lst_item[8]
+            add = lst_item[9]
+            style = lst_item[10]
+            model = lst_item[11]
+            read_by_player = lst_item[12]
+            read_only_player = lst_item[13]
 
             line_number += 1
 
@@ -758,16 +761,17 @@ class DocConnectorGSpread:
         """
 
         level = row[0]
-        key = row[1]
-        title = row[2]
-        description = row[3]
-        bullet_description = row[4]
-        second_bullet_description = row[5]
-        under_level_color = row[6]
-        model = row[7]
-        point = row[8]
-        hide_player = row[9]
-        admin = row[10]
+        admin = row[1]
+        key = row[2]
+        title = row[3]
+        description = row[4]
+        bullet_description = row[5]
+        second_bullet_description = row[6]
+        under_level_color = row[7]
+        sub_key = row[8]
+        model = row[9]
+        point = row[10]
+        hide_player = row[11]
 
         # Check error
         if title and not key:
@@ -890,5 +894,16 @@ class DocConnectorGSpread:
                 print(self._error, file=sys.stderr)
                 return False
             section["under_level_color"] = under_level_color
+
+        if sub_key:
+            section["sub_key"] = sub_key
+        if model:
+            section["model"] = model
+        if point:
+            section["point"] = point
+        if hide_player:
+            section["hide_player"] = hide_player
+        if admin:
+            section["admin"] = admin
 
         return True

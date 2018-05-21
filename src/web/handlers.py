@@ -887,12 +887,15 @@ class EditorCmdGenerateAndSaveHandler(jsonhandler.JsonHandler):
         status = doc_generator.generate_doc()
         if status:
             document = doc_generator.get_generated_doc()
+            info = {}
             if "manual" in document:
                 doc_part = document.get("manual")
-                self._manual.update({"manual": doc_part}, save=True)
+                info["manual"] = doc_part
+                # self._manual.update({"manual": doc_part}, save=True)
             if "lore" in document:
                 doc_part = document.get("lore")
-                self._manual.update({"lore": doc_part}, save=True)
+                info["lore"] = doc_part
+                # self._manual.update({"lore": doc_part}, save=True)
             if "schema_user" in document or "schema_char" in document or "form_user" in document \
                     or "form_char" in document or "admin_form_user" in document or "admin_form_char" in document:
                 dct_char_rule = {}
@@ -915,7 +918,12 @@ class EditorCmdGenerateAndSaveHandler(jsonhandler.JsonHandler):
                     doc_part = document.get("admin_form_char")
                     dct_char_rule["admin_form_char"] = doc_part
 
-                self._manual.update({"char_rule": dct_char_rule}, save=True)
+                info["char_rule"] = dct_char_rule
+                # Link manual and form
+                info = self._manual.generate_link(info)
+
+                # Write to database
+                self._manual.update(info, save=True)
             status = {"status": "Generated with success. Database updated."}
         else:
             status = doc_generator.get_error(force_error=True)

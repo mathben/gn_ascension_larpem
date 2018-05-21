@@ -52,3 +52,12 @@ class Manual(object):
     def get_last_date_updated(self):
         f = os.path.getmtime(self._manual_path)
         return f
+
+    @staticmethod
+    def generate_link(manual):
+        print("allo")
+        dct_char_rule = manual.get("char_rule", {})
+        for key, value in dct_char_rule.values():
+            pass
+
+        return manual
