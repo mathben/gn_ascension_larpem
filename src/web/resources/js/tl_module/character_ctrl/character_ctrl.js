@@ -28,6 +28,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.new_player = false;
   $scope.new_character = false;
   $scope.no_character = true;
+  $scope.character_point = {};
 
   $scope.model_database = {};
   $scope.model_user = {};
@@ -219,15 +220,18 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
 
   $scope.$watch("model_char", function (value) {
     if (value) {
-      console.info($scope.schema_char);
-      console.info("info");
+      $scope.character_point = {};
       $scope.prettyModelChar = JSON.stringify(value, undefined, 2);
+      if ($scope.character == null) {
+        return;
+      }
+
       // Update all documentation
       var manual = $scope.model_database.manual;
       for (var key in $scope.schema_char.properties) {
         var find_key = false;
         var manual_doc = "";
-        var point = "";
+        var point = null;
 
         // Find appropriate documentation
         for (var i1 = 0; i1 < manual.length; i1++) {
@@ -329,29 +333,30 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         }
 
         if (find_key) {
-          console.info("Find key");
-          $scope.schema_char.properties[key].description = point;
+          console.info("Find key " + key);
+          // $scope.schema_char.properties[key].description = point;
 
+          // $scope.character_point = Object.assign($scope.character_point, point);
+          var character = $scope.model_char;
+          if (key in character) {
+            Object.keys(character[key]).forEach(function (hab) {
+              for (var key_point in point) {
+                if (key_point in $scope.character_point) {
+                  $scope.character_point[key_point] += point[key_point];
+                } else {
+                  $scope.character_point[key_point] = point[key_point];
+                }
+              }
+            });
+          }
         } else {
           continue
         }
       }
-      // $scope.$apply();
-      var copy = $scope.schema_char;
-      var copy2 = $scope.form_char;
-      $scope.schema_char = {
-        "type": "object",
-        "properties": {
-          "blank": {}
-        }
-      };
-      $scope.form_char = [];
-
-      $scope.schema_char = copy;
-      $scope.form_char = copy2;
-
-      console.info($scope.schema_char);
     }
+
+    console.info("yo");
+    console.info($scope.character_point);
     // todo : update player
     // $scope.player = value;
   }, true);

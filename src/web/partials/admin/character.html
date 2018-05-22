@@ -57,8 +57,13 @@
         <div>
           Xp consommé : {{! countTotalCostXp() }}
           <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
-             ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
+                ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
           </span>
+        </div>
+        <div>
+          <div ng-repeat="(key, value) in character_point">
+            {{! key }} : {{! value }}
+          </div>
         </div>
         <!--<hr>-->
         <!--<div>-->
@@ -107,7 +112,7 @@
         <div ng-show="isMobile()">
           Xp consommé : {{! countTotalCostXp() }}
           <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
-             ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
+                ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
           </span>
         </div>
         <p>
@@ -134,18 +139,18 @@
         <h1>Section fiche de personnage</h1>
         <div sf-schema="schema_char" sf-form="form_char" sf-model="model_char"></div>
 
-        <!--<div ng-hide="isMobile()">-->
-        <!--<hr/>-->
-        <!--<div>{{!prettyModelUser}}</div>-->
-        <!--<hr/>-->
-        <!--<div>{{!prettyModelChar}}</div>-->
-        <!--<hr/>-->
-        <!--<div>{{!prettyPlayer}}</div>-->
-        <!--<hr/>-->
-        <!--<div>http://www.traitrelame.ca/character#/?id_player={{! player.id }}</div>-->
-        <!--<div>{{! url_qr_code }}</div>-->
-        <!--<hr/>-->
-        <!--</div>-->
+        <div ng-hide="isMobile()">
+          <hr/>
+          <div>{{!prettyModelUser}}</div>
+          <hr/>
+          <div>{{!prettyModelChar}}</div>
+          <hr/>
+          <div>{{!prettyPlayer}}</div>
+          <hr/>
+          <div>http://www.traitrelame.ca/character#/?id_player={{! player.id }}</div>
+          <div>{{! url_qr_code }}</div>
+          <hr/>
+        </div>
 
       </form>
 
@@ -156,7 +161,7 @@
       <div ng-show="isMobile()">
         Xp consommé : {{! countTotalCostXp() }}
         <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
-           ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
+              ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
         </span>
       </div>
     </div> <!-- end div form write -->

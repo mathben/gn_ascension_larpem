@@ -900,10 +900,46 @@ class DocConnectorGSpread:
         if model:
             section["model"] = model
         if point:
-            section["point"] = point
+            dct_point = self._transform_point(line_number, doc_sheet_name, point)
+            if dct_point is None:
+                return False
+            section["point"] = dct_point
         if hide_player:
             section["hide_player"] = hide_player
         if admin:
             section["admin"] = admin
 
         return True
+
+    def _transform_point(self, line_number, doc_sheet_name, str_point):
+        dct_point = {}
+        lst_point = str_point.split(";")
+
+        for str_single_point in lst_point:
+            if not str_single_point:
+                continue
+
+            if str_single_point.count(":") != 1:
+                msg = "Column 'Point' is wrong. Missing character ':' to separate key with value. Point : %s" % str_point
+                self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
+                print(self._error, file=sys.stderr)
+                return
+
+            key, value = str_single_point.split(":")
+            if key in dct_point:
+                msg = "Duplication key %s. Point : %s" % (key, str_point)
+                self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
+                print(self._error, file=sys.stderr)
+                return
+
+            try:
+                int_value = int(value)
+            except ValueError:
+                msg = "Value is not a digital : %s" % value
+                self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
+                print(self._error, file=sys.stderr)
+                return
+
+            dct_point[key] = int_value
+
+        return dct_point
