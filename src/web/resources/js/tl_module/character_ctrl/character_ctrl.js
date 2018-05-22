@@ -219,109 +219,110 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   }, true);
 
   $scope.$watch("model_char", function (value) {
-    if (value) {
-      $scope.character_point = {};
-      $scope.prettyModelChar = JSON.stringify(value, undefined, 2);
-      if ($scope.character == null) {
-        return;
-      }
+      if (value) {
+        $scope.character_point = {};
+        $scope.prettyModelChar = JSON.stringify(value, undefined, 2);
+        if ($scope.character == null) {
+          return;
+        }
 
-      // Update all documentation
-      var manual = $scope.model_database.manual;
-      for (var key in $scope.schema_char.properties) {
-        var find_key = false;
-        var manual_doc = "";
-        var point = null;
+        // Update all documentation
+        var manual = $scope.model_database.manual;
+        for (var key in $scope.schema_char.properties) {
+          var find_key = false;
+          var manual_doc = "";
+          var point = null;
 
-        // Find appropriate documentation
-        for (var i1 = 0; i1 < manual.length; i1++) {
-          var sec1 = manual[i1];
+          // Find appropriate documentation
+          for (var i1 = 0; i1 < manual.length; i1++) {
+            var sec1 = manual[i1];
 
-          // Duplicated code to find key
-          if (isDefined(sec1.model) && sec1.model == key) {
-            find_key = true;
+            // Duplicated code to find key
+            if (isDefined(sec1.model) && sec1.model == key) {
+              find_key = true;
 
-            if (isDefined(sec1.description)) {
-              manual_doc = sec1.description;
-            }
-            if (isDefined(sec1.point)) {
-              point = sec1.point;
-            }
-            break;
-          }
-          // END Duplicated code to find key
-
-          if (sec1.section) {
-            for (var i2 = 0; i2 < sec1.section.length; i2++) {
-              var sec2 = sec1.section[i2];
-
-              // Duplicated code to find key
-              if (isDefined(sec2.model) && sec2.model == key) {
-                find_key = true;
-
-                if (isDefined(sec2.description)) {
-                  manual_doc = sec2.description;
-                }
-                if (isDefined(sec2.point)) {
-                  point = sec2.point;
-                }
-                break;
+              if (isDefined(sec1.description)) {
+                manual_doc = sec1.description;
               }
-              // END Duplicated code to find key
+              if (isDefined(sec1.point)) {
+                point = sec1.point;
+              }
+              break;
+            }
+            // END Duplicated code to find key
 
-              if (sec2.section) {
-                for (var i3 = 0; i3 < sec2.section.length; i3++) {
-                  var sec3 = sec2.section[i3];
+            if (sec1.section) {
+              for (var i2 = 0; i2 < sec1.section.length; i2++) {
+                var sec2 = sec1.section[i2];
 
-                  // Duplicated code to find key
-                  if (isDefined(sec3.model) && sec3.model == key) {
-                    find_key = true;
+                // Duplicated code to find key
+                if (isDefined(sec2.model) && sec2.model == key) {
+                  find_key = true;
 
-                    if (isDefined(sec3.description)) {
-                      manual_doc = sec3.description;
-                    }
-                    if (isDefined(sec3.point)) {
-                      point = sec3.point;
-                    }
-                    break;
+                  if (isDefined(sec2.description)) {
+                    manual_doc = sec2.description;
                   }
-                  // END Duplicated code to find key
+                  if (isDefined(sec2.point)) {
+                    point = sec2.point;
+                  }
+                  break;
+                }
+                // END Duplicated code to find key
 
-                  if (sec3.section) {
-                    for (var i4 = 0; i4 < sec3.section.length; i4++) {
-                      var sec4 = sec3.section[i4];
+                if (sec2.section) {
+                  for (var i3 = 0; i3 < sec2.section.length; i3++) {
+                    var sec3 = sec2.section[i3];
 
-                      // Duplicated code to find key
-                      if (isDefined(sec4.model) && sec4.model == key) {
-                        find_key = true;
+                    // Duplicated code to find key
+                    if (isDefined(sec3.model) && sec3.model == key) {
+                      find_key = true;
 
-                        if (isDefined(sec4.description)) {
-                          manual_doc = sec4.description;
-                        }
-                        if (isDefined(sec4.point)) {
-                          point = sec4.point;
-                        }
-                        break;
+                      if (isDefined(sec3.description)) {
+                        manual_doc = sec3.description;
                       }
-                      // END Duplicated code to find key
+                      if (isDefined(sec3.point)) {
+                        point = sec3.point;
+                      }
+                      break;
+                    }
+                    // END Duplicated code to find key
 
-                      if (sec4.section) {
-                        for (var i5 = 0; i5 < sec4.section.length; i5++) {
-                          var sec5 = sec4.section[i5];
+                    if (sec3.section) {
+                      for (var i4 = 0; i4 < sec3.section.length; i4++) {
+                        var sec4 = sec3.section[i4];
 
-                          // Duplicated code to find key
-                          if (isDefined(sec5.model) && sec5.model == key) {
-                            find_key = true;
+                        // Duplicated code to find key
+                        if (isDefined(sec4.model) && sec4.model == key) {
+                          find_key = true;
 
-                            if (isDefined(sec5.description)) {
-                              manual_doc = sec5.description;
-                            }
-                            if (isDefined(sec5.point)) {
-                              point = sec5.point;
-                            }
-                            break;
+                          if (isDefined(sec4.description)) {
+                            manual_doc = sec4.description;
                           }
-                          // END Duplicated code to find key
+                          if (isDefined(sec4.point)) {
+                            point = sec4.point;
+                          }
+                          break;
+                        }
+                        // END Duplicated code to find key
+
+                        if (sec4.section) {
+                          for (var i5 = 0; i5 < sec4.section.length; i5++) {
+                            var sec5 = sec4.section[i5];
+
+                            // Duplicated code to find key
+                            if (isDefined(sec5.model) && sec5.model == key) {
+                              find_key = true;
+
+                              if (isDefined(sec5.description)) {
+                                manual_doc = sec5.description;
+                              }
+                              if (isDefined(sec5.point)) {
+                                point = sec5.point;
+                              }
+                              break;
+                            }
+                            // END Duplicated code to find key
+                          }
                         }
                       }
                     }
@@ -330,36 +331,49 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
               }
             }
           }
-        }
 
-        if (find_key) {
-          console.info("Find key " + key);
-          // $scope.schema_char.properties[key].description = point;
+          if (find_key) {
+            console.info("Find key " + key);
+            // $scope.schema_char.properties[key].description = point;
 
-          // $scope.character_point = Object.assign($scope.character_point, point);
-          var character = $scope.model_char;
-          if (key in character) {
-            Object.keys(character[key]).forEach(function (hab) {
-              for (var key_point in point) {
-                if (key_point in $scope.character_point) {
-                  $scope.character_point[key_point] += point[key_point];
-                } else {
-                  $scope.character_point[key_point] = point[key_point];
+            // $scope.character_point = Object.assign($scope.character_point, point);
+            var character = $scope.model_char;
+            if (key in character) {
+              Object.keys(character[key]).forEach(function (hab) {
+                console.info(hab);
+                for (var key_point in point) {
+                  if (key_point in $scope.character_point) {
+                    $scope.character_point[key_point] += point[key_point];
+                  } else {
+                    $scope.character_point[key_point] = point[key_point];
+                  }
                 }
-              }
-            });
+              });
+            }
+          } else {
+            continue
           }
-        } else {
-          continue
         }
       }
-    }
+      for (var key in $scope.model_char) {
+        // check if the property/key is defined in the object itself, not in parent
+        if ($scope.model_char.hasOwnProperty(key)) {
+          for (var hab in $scope.model_char[key]) {
+            for (var i = 0; i < $scope.model_char[key].length; i++) {
+              console.info($scope.model_char[key][i]);
+            }
+          }
+        }
+      }
 
-    console.info("yo");
-    console.info($scope.character_point);
-    // todo : update player
-    // $scope.player = value;
-  }, true);
+      console.info("yo");
+      console.info($scope.character_point);
+      // todo : update player
+      // $scope.player = value;
+    }
+    ,
+    true
+  );
 
   $scope.$watch("player", function (value) {
     if (!value) {
