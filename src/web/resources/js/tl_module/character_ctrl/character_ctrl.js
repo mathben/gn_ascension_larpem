@@ -74,6 +74,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       $scope.form_user = data.form_user;
       $scope.form_char = data.form_char;
       $scope.model_database = response.data;
+      $scope.update_point();
     }, function errorCallback(response) {
       console.error(response);
     });
