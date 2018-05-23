@@ -915,11 +915,19 @@ class DocConnectorGSpread:
                 print(self._error, file=sys.stderr)
                 return False
 
+            # HACK with model
+            if "habilites" in model:
+                sub_key = "habilites_" + sub_key
+            if "technique_maitre" in model:
+                sub_key = "technique_maitre_" + sub_key
+
             if sub_key in self._doc_point:
-                msg = "Duplicated sub_key : %s" % sub_key
-                self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
-                print(self._error, file=sys.stderr)
-                return False
+                # HACK ignore "Contrebande" duplication
+                if "Contrebande" not in sub_key:
+                    msg = "Duplicated sub_key : %s" % sub_key
+                    self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
+                    print(self._error, file=sys.stderr)
+                    return False
 
             self._doc_point[sub_key] = dct_point
         if hide_player:

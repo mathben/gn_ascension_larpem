@@ -401,7 +401,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
           // total_xp += obj.options.length;
           // Find the associate point
           for (var j = 0; j < obj.options.length; j++) {
-            var sub_key = obj.options[j];
+            var sub_key = "habilites_" + obj.options[j];
 
             if (sub_key in $scope.model_database.point) {
               var dct_key_point = $scope.model_database.point[sub_key];
@@ -428,7 +428,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
           // total_xp += obj.options.length;
           // Find the associate point
           for (var j = 0; j < obj.options.length; j++) {
-            var sub_key = obj.options[j];
+            var sub_key = "technique_maitre_" + obj.options[j];
 
             if (sub_key in $scope.model_database.point) {
               var dct_key_point = $scope.model_database.point[sub_key];
