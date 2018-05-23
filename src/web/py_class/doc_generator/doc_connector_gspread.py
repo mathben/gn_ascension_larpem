@@ -80,6 +80,7 @@ class DocConnectorGSpread:
         self._error = None
         self._connector_is_valid = True
         self._msg_share_invite = msg_share_invite
+        self._doc_point = {}
 
         self._info_sheet = [
             {"type": DocType.DOC, "name": "manual", "permission": ["anyone"]},
@@ -215,6 +216,7 @@ class DocConnectorGSpread:
         sh = self._g_file
         worksheet_list = sh.worksheets()
         dct_doc = {}
+        self._doc_point = {}
 
         for sheet_info in self._info_sheet:
             sheet_name = sheet_info.get("name")
@@ -265,6 +267,9 @@ class DocConnectorGSpread:
             is_form_admin = sheet_info.get("is_admin", False)
             adapted_sheet_name = sheet_name if not is_form_admin else "admin_" + sheet_name
             dct_doc[adapted_sheet_name] = info
+
+        # Add extra compilation about point page
+        dct_doc["point"] = self._doc_point
 
         self._generated_doc = dct_doc
         return True
@@ -904,6 +909,19 @@ class DocConnectorGSpread:
             if dct_point is None:
                 return False
             section["point"] = dct_point
+            if not sub_key:
+                msg = "sub_key is empty."
+                self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
+                print(self._error, file=sys.stderr)
+                return False
+
+            if sub_key in self._doc_point:
+                msg = "Duplicated sub_key : %s" % sub_key
+                self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
+                print(self._error, file=sys.stderr)
+                return False
+
+            self._doc_point[sub_key] = dct_point
         if hide_player:
             section["hide_player"] = hide_player
         if admin:

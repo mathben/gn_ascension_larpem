@@ -85,6 +85,7 @@
 
     <div ng-hide="new_player">
       <h1>Information pour le joueur</h1>
+      <h2>État de la fiche</h2>
       <p>
         Date de création : {{! model_char.date_creation * 1000 | UTCToNow: true }}<br/>
         Date de mise à jour : {{! model_char.date_modify * 1000 | UTCToNow: true }}
@@ -100,6 +101,57 @@
            ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
         </a>
       </div>
+      <h2>Objet de début de jeu</h2>
+      <div>
+        <ol>
+          <li ng-show="character_point.hasOwnProperty('PtComposante')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtComposante"] }}</span> composante<span ng-show="character_point['PtComposante'] > 1">s</span>
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtBlocPotion')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtBlocPotion"] }}</span> bloc<span ng-show="character_point['PtBlocPotion'] > 1">s</span> de potion
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtBlocAlchimie')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtBlocAlchimie"] }}</span> bloc<span ng-show="character_point['PtBlocAlchimie'] > 1">s</span> d'alchimie
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtBlocArtisan')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtBlocArtisan"] }}</span> bloc<span ng-show="character_point['PtBlocArtisan'] > 1">s</span> d'artisan
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtBlocForgeron')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtBlocForgeron"] }}</span> bloc<span ng-show="character_point['PtBlocForgeron'] > 1">s</span> de forgeron
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtBlocHerboristerie')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtBlocHerboristerie"] }}</span> bloc<span ng-show="character_point['PtBlocHerboristerie'] > 1">s</span>
+            d'herboristerie
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtBlocProduction')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtBlocProduction"] }}</span> bloc<span ng-show="character_point['PtBlocProduction'] > 1">s</span> de production
+            (potion, alchimie, artisan, forgeron ou herboristerie)
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtComposanteOuProduction')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtComposanteOuProduction"] }}</span> composante<span
+              ng-show="character_point['PtComposanteOuProduction'] > 1">s</span> ou bloc<span ng-show="character_point['PtComposanteOuProduction'] > 1">s</span> de production
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtJoyau')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtJoyau"] }}</span> joyau<span ng-show="character_point['PtJoyau'] > 1">x</span>
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtPiecette')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtPiecette"] }}</span> piécette<span ng-show="character_point['PtPiecette'] > 1">s</span>
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtAppuieCriminel')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtAppuieCriminel"] }}</span> appuie<span ng-show="character_point['PtAppuieCriminel'] > 1">s</span> criminel
+          </li>
+        </ol>
+      </div>
+      <h2> Caractéristique du personnage</h2>
+      <div>
+        Total de point de vie : <span style="font-weight:bold;color:cornflowerblue">{{! 3 + ((character_point.hasOwnProperty('PtVieMax')) ? character_point["PtVieMax"] : 0) }}</span><br/>
+        Total de point d'endurance : <span style="font-weight:bold;color:cornflowerblue">{{! 2 + ((character_point.hasOwnProperty('PtEnergieMax')) ? character_point["PtEnergieMax"] : 0) }}</span><br/>
+        Total de point de karma : <span style="font-weight:bold;color:cornflowerblue">{{! 10 + ((character_point.hasOwnProperty('PtKarmaMax')) ? character_point["PtKarmaMax"] : 0) }}</span><br/>
+        Total d'école de magie : <span style="font-weight:bold;color:cornflowerblue">{{! (character_point.hasOwnProperty('PtEcoleMagieMax')) ? character_point["PtEcoleMagieMax"] : 0 }}</span><br/>
+        Total de sous-école de magie : <span
+          style="font-weight:bold;color:cornflowerblue">{{! (character_point.hasOwnProperty('PtSousEcoleMagieMax')) ? character_point["PtSousEcoleMagieMax"] : 0 }}</span><br/>
+      </div>
+      <h2>Approbation</h2>
       <p>
         Status de validation de la fiche par le maître du jeu :
         <span style="color:cornflowerblue" ng-show="is_approbation_new(player)">✪ nouveau</span>

@@ -219,161 +219,252 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   }, true);
 
   $scope.$watch("model_char", function (value) {
-      if (value) {
-        $scope.character_point = {};
-        $scope.prettyModelChar = JSON.stringify(value, undefined, 2);
-        if ($scope.character == null) {
-          return;
-        }
+    if (value) {
+      $scope.prettyModelChar = JSON.stringify(value, undefined, 2);
+      // if ($scope.character == null) {
+      //   return;
+      // }
+      //
+      // // Update all documentation
+      // var manual = $scope.model_database.manual;
+      // for (var key in $scope.schema_char.properties) {
+      //   var find_key = false;
+      //   var manual_doc = "";
+      //   var point = null;
+      //
+      //   // Find appropriate documentation
+      //   for (var i1 = 0; i1 < manual.length; i1++) {
+      //     var sec1 = manual[i1];
+      //
+      //     // Duplicated code to find key
+      //     if (isDefined(sec1.model) && sec1.model == key) {
+      //       find_key = true;
+      //
+      //       if (isDefined(sec1.description)) {
+      //         manual_doc = sec1.description;
+      //       }
+      //       if (isDefined(sec1.point)) {
+      //         point = sec1.point;
+      //       }
+      //       break;
+      //     }
+      //     // END Duplicated code to find key
+      //
+      //     if (sec1.section) {
+      //       for (var i2 = 0; i2 < sec1.section.length; i2++) {
+      //         var sec2 = sec1.section[i2];
+      //
+      //         // Duplicated code to find key
+      //         if (isDefined(sec2.model) && sec2.model == key) {
+      //           find_key = true;
+      //
+      //           if (isDefined(sec2.description)) {
+      //             manual_doc = sec2.description;
+      //           }
+      //           if (isDefined(sec2.point)) {
+      //             point = sec2.point;
+      //           }
+      //           break;
+      //         }
+      //         // END Duplicated code to find key
+      //
+      //         if (sec2.section) {
+      //           for (var i3 = 0; i3 < sec2.section.length; i3++) {
+      //             var sec3 = sec2.section[i3];
+      //
+      //             // Duplicated code to find key
+      //             if (isDefined(sec3.model) && sec3.model == key) {
+      //               find_key = true;
+      //
+      //               if (isDefined(sec3.description)) {
+      //                 manual_doc = sec3.description;
+      //               }
+      //               if (isDefined(sec3.point)) {
+      //                 point = sec3.point;
+      //               }
+      //               break;
+      //             }
+      //             // END Duplicated code to find key
+      //
+      //             if (sec3.section) {
+      //               for (var i4 = 0; i4 < sec3.section.length; i4++) {
+      //                 var sec4 = sec3.section[i4];
+      //
+      //                 // Duplicated code to find key
+      //                 if (isDefined(sec4.model) && sec4.model == key) {
+      //                   find_key = true;
+      //
+      //                   if (isDefined(sec4.description)) {
+      //                     manual_doc = sec4.description;
+      //                   }
+      //                   if (isDefined(sec4.point)) {
+      //                     point = sec4.point;
+      //                   }
+      //                   break;
+      //                 }
+      //                 // END Duplicated code to find key
+      //
+      //                 if (sec4.section) {
+      //                   for (var i5 = 0; i5 < sec4.section.length; i5++) {
+      //                     var sec5 = sec4.section[i5];
+      //
+      //                     // Duplicated code to find key
+      //                     if (isDefined(sec5.model) && sec5.model == key) {
+      //                       find_key = true;
+      //
+      //                       if (isDefined(sec5.description)) {
+      //                         manual_doc = sec5.description;
+      //                       }
+      //                       if (isDefined(sec5.point)) {
+      //                         point = sec5.point;
+      //                       }
+      //                       break;
+      //                     }
+      //                     // END Duplicated code to find key
+      //                   }
+      //                 }
+      //               }
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
 
-        // Update all documentation
-        var manual = $scope.model_database.manual;
-        for (var key in $scope.schema_char.properties) {
-          var find_key = false;
-          var manual_doc = "";
-          var point = null;
-
-          // Find appropriate documentation
-          for (var i1 = 0; i1 < manual.length; i1++) {
-            var sec1 = manual[i1];
-
-            // Duplicated code to find key
-            if (isDefined(sec1.model) && sec1.model == key) {
-              find_key = true;
-
-              if (isDefined(sec1.description)) {
-                manual_doc = sec1.description;
-              }
-              if (isDefined(sec1.point)) {
-                point = sec1.point;
-              }
-              break;
-            }
-            // END Duplicated code to find key
-
-            if (sec1.section) {
-              for (var i2 = 0; i2 < sec1.section.length; i2++) {
-                var sec2 = sec1.section[i2];
-
-                // Duplicated code to find key
-                if (isDefined(sec2.model) && sec2.model == key) {
-                  find_key = true;
-
-                  if (isDefined(sec2.description)) {
-                    manual_doc = sec2.description;
-                  }
-                  if (isDefined(sec2.point)) {
-                    point = sec2.point;
-                  }
-                  break;
-                }
-                // END Duplicated code to find key
-
-                if (sec2.section) {
-                  for (var i3 = 0; i3 < sec2.section.length; i3++) {
-                    var sec3 = sec2.section[i3];
-
-                    // Duplicated code to find key
-                    if (isDefined(sec3.model) && sec3.model == key) {
-                      find_key = true;
-
-                      if (isDefined(sec3.description)) {
-                        manual_doc = sec3.description;
-                      }
-                      if (isDefined(sec3.point)) {
-                        point = sec3.point;
-                      }
-                      break;
-                    }
-                    // END Duplicated code to find key
-
-                    if (sec3.section) {
-                      for (var i4 = 0; i4 < sec3.section.length; i4++) {
-                        var sec4 = sec3.section[i4];
-
-                        // Duplicated code to find key
-                        if (isDefined(sec4.model) && sec4.model == key) {
-                          find_key = true;
-
-                          if (isDefined(sec4.description)) {
-                            manual_doc = sec4.description;
-                          }
-                          if (isDefined(sec4.point)) {
-                            point = sec4.point;
-                          }
-                          break;
-                        }
-                        // END Duplicated code to find key
-
-                        if (sec4.section) {
-                          for (var i5 = 0; i5 < sec4.section.length; i5++) {
-                            var sec5 = sec4.section[i5];
-
-                            // Duplicated code to find key
-                            if (isDefined(sec5.model) && sec5.model == key) {
-                              find_key = true;
-
-                              if (isDefined(sec5.description)) {
-                                manual_doc = sec5.description;
-                              }
-                              if (isDefined(sec5.point)) {
-                                point = sec5.point;
-                              }
-                              break;
-                            }
-                            // END Duplicated code to find key
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-
-          if (find_key) {
-            console.info("Find key " + key);
-            // $scope.schema_char.properties[key].description = point;
-
-            // $scope.character_point = Object.assign($scope.character_point, point);
-            var character = $scope.model_char;
-            if (key in character) {
-              Object.keys(character[key]).forEach(function (hab) {
-                console.info(hab);
-                for (var key_point in point) {
-                  if (key_point in $scope.character_point) {
-                    $scope.character_point[key_point] += point[key_point];
-                  } else {
-                    $scope.character_point[key_point] = point[key_point];
-                  }
-                }
-              });
-            }
-          } else {
-            continue
-          }
-        }
-      }
-      for (var key in $scope.model_char) {
-        // check if the property/key is defined in the object itself, not in parent
-        if ($scope.model_char.hasOwnProperty(key)) {
-          for (var hab in $scope.model_char[key]) {
-            for (var i = 0; i < $scope.model_char[key].length; i++) {
-              console.info($scope.model_char[key][i]);
-            }
-          }
-        }
-      }
-
-      console.info("yo");
-      console.info($scope.character_point);
-      // todo : update player
-      // $scope.player = value;
+      // if (find_key) {
+      //   console.info("Find key " + key);
+      //   // $scope.schema_char.properties[key].description = point;
+      //
+      //   // $scope.character_point = Object.assign($scope.character_point, point);
+      //   // var character = $scope.model_char;
+      //   // if (key in character) {
+      //   //   Object.keys(character[key]).forEach(function (hab) {
+      //   //     console.info(hab);
+      //   //     for (var key_point in point) {
+      //   //       if (key_point in $scope.character_point) {
+      //   //         $scope.character_point[key_point] += point[key_point];
+      //   //       } else {
+      //   //         $scope.character_point[key_point] = point[key_point];
+      //   //       }
+      //   //     }
+      //   //   });
+      //   // }
+      //
+      //
+      // } else {
+      //   continue
+      // }
     }
-    ,
-    true
-  );
+    $scope.character_point = {};
+    if (isDefined($scope.model_char.energie)) {
+      for (var i = 0; i < $scope.model_char.energie.length; i++) {
+        var sub_key = "Energie_1";
+        if (sub_key in $scope.model_database.point) {
+          var dct_key_point = $scope.model_database.point[sub_key];
+
+          for (var key_point in dct_key_point) {
+            if (dct_key_point.hasOwnProperty(key_point)) {
+              var point_value = dct_key_point[key_point];
+              if (key_point in $scope.character_point) {
+                $scope.character_point[key_point] += point_value;
+              } else {
+                $scope.character_point[key_point] = point_value;
+              }
+            }
+          }
+        }
+      }
+    }
+    if (isDefined($scope.model_char.endurance)) {
+      for (var i = 0; i < $scope.model_char.endurance.length; i++) {
+        var sub_key = "Endurance_1";
+        if (sub_key in $scope.model_database.point) {
+          var dct_key_point = $scope.model_database.point[sub_key];
+
+          for (var key_point in dct_key_point) {
+            if (dct_key_point.hasOwnProperty(key_point)) {
+              var point_value = dct_key_point[key_point];
+              if (key_point in $scope.character_point) {
+                $scope.character_point[key_point] += point_value;
+              } else {
+                $scope.character_point[key_point] = point_value;
+              }
+            }
+          }
+        }
+      }
+    }
+    if (isDefined($scope.model_char.habilites)) {
+      for (var i = 0; i < $scope.model_char.habilites.length; i++) {
+        var obj = $scope.model_char.habilites[i];
+        if (isDefined(obj.options)) {
+          // total_xp += obj.options.length;
+          // Find the associate point
+          for (var j = 0; j < obj.options.length; j++) {
+            var sub_key = obj.options[j];
+
+            if (sub_key in $scope.model_database.point) {
+              var dct_key_point = $scope.model_database.point[sub_key];
+
+              for (var key_point in dct_key_point) {
+                if (dct_key_point.hasOwnProperty(key_point)) {
+                  var point_value = dct_key_point[key_point];
+                  if (key_point in $scope.character_point) {
+                    $scope.character_point[key_point] += point_value;
+                  } else {
+                    $scope.character_point[key_point] = point_value;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    if (isDefined($scope.model_char.technique_maitre)) {
+      for (var i = 0; i < $scope.model_char.technique_maitre.length; i++) {
+        var obj = $scope.model_char.technique_maitre[i];
+        if (isDefined(obj.options)) {
+          // total_xp += obj.options.length;
+          // Find the associate point
+          for (var j = 0; j < obj.options.length; j++) {
+            var sub_key = obj.options[j];
+
+            if (sub_key in $scope.model_database.point) {
+              var dct_key_point = $scope.model_database.point[sub_key];
+
+              for (var key_point in dct_key_point) {
+                if (dct_key_point.hasOwnProperty(key_point)) {
+                  var point_value = dct_key_point[key_point];
+                  if (key_point in $scope.character_point) {
+                    $scope.character_point[key_point] += point_value;
+                  } else {
+                    $scope.character_point[key_point] = point_value;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    // }
+    // for (var key in $scope.model_char) {
+    //   // check if the property/key is defined in the object itself, not in parent
+    //   if ($scope.model_char.hasOwnProperty(key)) {
+    //     for (var hab in $scope.model_char[key]) {
+    //       for (var i = 0; i < $scope.model_char[key].length; i++) {
+    //         console.info($scope.model_char[key][i]);
+    //       }
+    //     }
+    //   }
+    // }
+    //
+    // console.info("yo");
+    // console.info($scope.character_point);
+    // todo : update player
+    // $scope.player = value;
+  }, true);
 
   $scope.$watch("player", function (value) {
     if (!value) {
@@ -423,137 +514,137 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     $scope.get_html_qr_code();
   }, true);
 
-  // $scope.$watch("character", function (value) {
-  //   $scope.cs_character = $scope.character;
-  //   // $scope.fill_cs_character_habilites();
-  // }, true);
+// $scope.$watch("character", function (value) {
+//   $scope.cs_character = $scope.character;
+//   // $scope.fill_cs_character_habilites();
+// }, true);
 
-  // $scope.characterSheetPrintOptionChange = function (value) {
-  //   if ($scope.cs_setting == "filled") {
-  //     $scope.cs_player = $scope.player;
-  //     $scope.cs_character = $scope.character;
-  //     // $scope.fill_cs_character_habilites();
-  //     console.log($scope.getSheetOutput($scope.cs_character.endurance.total));
-  //   } else {
-  //     $scope.cs_player = {};
-  //     $scope.cs_character = {};
-  //     $scope.cs_character_habilites = [];
-  //   }
-  // };
+// $scope.characterSheetPrintOptionChange = function (value) {
+//   if ($scope.cs_setting == "filled") {
+//     $scope.cs_player = $scope.player;
+//     $scope.cs_character = $scope.character;
+//     // $scope.fill_cs_character_habilites();
+//     console.log($scope.getSheetOutput($scope.cs_character.endurance.total));
+//   } else {
+//     $scope.cs_player = {};
+//     $scope.cs_character = {};
+//     $scope.cs_character_habilites = [];
+//   }
+// };
 
-  // $scope.fill_cs_character_habilites = function () {
-  //   // lvl 1 : 4 disciplines
-  //   // lvl 2 : 2 habilités
-  //   // lvl 3 : 3 options
-  //   // var max_discipline = 4;
-  //   // var max_unique_discipline = 2;
-  //   // var max_hability = 2;
-  //   // var max_unique_hability = 1;
-  //   var i_discipline = 0;
-  //
-  //   var dct_model = [
-  //     {
-  //       "discipline": "",
-  //       "hab_A": "",
-  //       "hab_A_1": "",
-  //       "hab_A_2": "",
-  //       "hab_A_3": "",
-  //       "hab_B": "",
-  //       "hab_B_1": "",
-  //       "hab_B_2": "",
-  //       "hab_B_3": ""
-  //     },
-  //     {
-  //       "discipline": "",
-  //       "hab_A": "",
-  //       "hab_A_1": "",
-  //       "hab_A_2": "",
-  //       "hab_A_3": "",
-  //       "hab_B": "",
-  //       "hab_B_1": "",
-  //       "hab_B_2": "",
-  //       "hab_B_3": ""
-  //     },
-  //     {
-  //       "discipline": "",
-  //       "hab_A": "",
-  //       "hab_A_1": "",
-  //       "hab_A_2": "",
-  //       "hab_A_3": "",
-  //       "hab_B": "",
-  //       "hab_B_1": "",
-  //       "hab_B_2": "",
-  //       "hab_B_3": ""
-  //     },
-  //     {
-  //       "discipline": "",
-  //       "hab_A": "",
-  //       "hab_A_1": "",
-  //       "hab_A_2": "",
-  //       "hab_A_3": "",
-  //       "hab_B": "",
-  //       "hab_B_1": "",
-  //       "hab_B_2": "",
-  //       "hab_B_3": ""
-  //     }
-  //   ];
-  //
-  //   if ($scope.character && $scope.character.habilites) {
-  //     $scope.character.habilites.forEach(function (value) {
-  //       var option_0 = $scope.getSheetOutput(value.options[0]);
-  //       var option_1 = $scope.getSheetOutput(value.options[1]);
-  //       var option_2 = $scope.getSheetOutput(value.options[2]);
-  //       var find = false;
-  //       // validate if exist
-  //       for (var i = 0; i < i_discipline; i++) {
-  //
-  //         if (dct_model[i].discipline == value.discipline) {
-  //           // check if repeating ability
-  //           if (!dct_model[i].hab_A) {
-  //             // fill free space
-  //             dct_model[i].hab_A = value.habilite;
-  //             dct_model[i].hab_A_1 = option_0;
-  //             dct_model[i].hab_A_2 = option_1;
-  //             dct_model[i].hab_A_3 = option_2;
-  //
-  //             find = true;
-  //             break;
-  //           } else if (!dct_model[i].hab_B) {
-  //             // fill free space
-  //             dct_model[i].hab_B = value.habilite;
-  //             dct_model[i].hab_B_1 = option_0;
-  //             dct_model[i].hab_B_2 = option_1;
-  //             dct_model[i].hab_B_3 = option_2;
-  //
-  //             find = true;
-  //             break;
-  //           }
-  //           // no free space, discipline will be recreate in !find section
-  //         }
-  //       }
-  //       if (!find) {
-  //         // not exist
-  //         // TODO add validation here
-  //         dct_model[i_discipline].discipline = value.discipline;
-  //         dct_model[i_discipline].hab_A = value.habilite;
-  //         dct_model[i_discipline].hab_A_1 = option_0;
-  //         dct_model[i_discipline].hab_A_2 = option_1;
-  //         dct_model[i_discipline].hab_A_3 = option_2;
-  //
-  //         i_discipline++;
-  //       }
-  //     });
-  //   }
-  //
-  //   $scope.cs_character_habilites = dct_model;
-  // };
+// $scope.fill_cs_character_habilites = function () {
+//   // lvl 1 : 4 disciplines
+//   // lvl 2 : 2 habilités
+//   // lvl 3 : 3 options
+//   // var max_discipline = 4;
+//   // var max_unique_discipline = 2;
+//   // var max_hability = 2;
+//   // var max_unique_hability = 1;
+//   var i_discipline = 0;
+//
+//   var dct_model = [
+//     {
+//       "discipline": "",
+//       "hab_A": "",
+//       "hab_A_1": "",
+//       "hab_A_2": "",
+//       "hab_A_3": "",
+//       "hab_B": "",
+//       "hab_B_1": "",
+//       "hab_B_2": "",
+//       "hab_B_3": ""
+//     },
+//     {
+//       "discipline": "",
+//       "hab_A": "",
+//       "hab_A_1": "",
+//       "hab_A_2": "",
+//       "hab_A_3": "",
+//       "hab_B": "",
+//       "hab_B_1": "",
+//       "hab_B_2": "",
+//       "hab_B_3": ""
+//     },
+//     {
+//       "discipline": "",
+//       "hab_A": "",
+//       "hab_A_1": "",
+//       "hab_A_2": "",
+//       "hab_A_3": "",
+//       "hab_B": "",
+//       "hab_B_1": "",
+//       "hab_B_2": "",
+//       "hab_B_3": ""
+//     },
+//     {
+//       "discipline": "",
+//       "hab_A": "",
+//       "hab_A_1": "",
+//       "hab_A_2": "",
+//       "hab_A_3": "",
+//       "hab_B": "",
+//       "hab_B_1": "",
+//       "hab_B_2": "",
+//       "hab_B_3": ""
+//     }
+//   ];
+//
+//   if ($scope.character && $scope.character.habilites) {
+//     $scope.character.habilites.forEach(function (value) {
+//       var option_0 = $scope.getSheetOutput(value.options[0]);
+//       var option_1 = $scope.getSheetOutput(value.options[1]);
+//       var option_2 = $scope.getSheetOutput(value.options[2]);
+//       var find = false;
+//       // validate if exist
+//       for (var i = 0; i < i_discipline; i++) {
+//
+//         if (dct_model[i].discipline == value.discipline) {
+//           // check if repeating ability
+//           if (!dct_model[i].hab_A) {
+//             // fill free space
+//             dct_model[i].hab_A = value.habilite;
+//             dct_model[i].hab_A_1 = option_0;
+//             dct_model[i].hab_A_2 = option_1;
+//             dct_model[i].hab_A_3 = option_2;
+//
+//             find = true;
+//             break;
+//           } else if (!dct_model[i].hab_B) {
+//             // fill free space
+//             dct_model[i].hab_B = value.habilite;
+//             dct_model[i].hab_B_1 = option_0;
+//             dct_model[i].hab_B_2 = option_1;
+//             dct_model[i].hab_B_3 = option_2;
+//
+//             find = true;
+//             break;
+//           }
+//           // no free space, discipline will be recreate in !find section
+//         }
+//       }
+//       if (!find) {
+//         // not exist
+//         // TODO add validation here
+//         dct_model[i_discipline].discipline = value.discipline;
+//         dct_model[i_discipline].hab_A = value.habilite;
+//         dct_model[i_discipline].hab_A_1 = option_0;
+//         dct_model[i_discipline].hab_A_2 = option_1;
+//         dct_model[i_discipline].hab_A_3 = option_2;
+//
+//         i_discipline++;
+//       }
+//     });
+//   }
+//
+//   $scope.cs_character_habilites = dct_model;
+// };
 
-  //get the string to output on the character sheet
+//get the string to output on the character sheet
   $scope.getSheetOutput = function (value) {
     return isDefined(value) ? value.toString() : "";
   };
 
-  //fills the checks array with booleans used as models to determine whether checkboxes are checked or not
+//fills the checks array with booleans used as models to determine whether checkboxes are checked or not
   $scope.setChecks = function () {
 
     $scope.cs_checks = [];
@@ -757,11 +848,11 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     $scope.html_qr_code = qr.createImgTag();
   };
 
-  // socket.onmessage = function (e) {
-  //   $scope.message = JSON.parse(e.data);
-  //   console.log($scope.message);
-  //   $scope.$apply();
-  // };
+// socket.onmessage = function (e) {
+//   $scope.message = JSON.parse(e.data);
+//   console.log($scope.message);
+//   $scope.$apply();
+// };
 
 // For admin page
 //  $http.get("/cmd/character_view").success(

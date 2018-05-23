@@ -32,7 +32,12 @@ class Manual(object):
         if not self._manual:
             return {}
 
-        tmp_rule = {"char_rule": {}, "manual": self._manual["manual"], "lore": self._manual["lore"]}
+        tmp_rule = {
+            "char_rule": {},
+            "manual": self._manual["manual"],
+            "lore": self._manual["lore"],
+            "point": self._manual["point"]
+        }
         if is_admin:
             tmp_rule["char_rule"]["schema_user"] = self._manual["char_rule"]["schema_user"]
             tmp_rule["char_rule"]["schema_char"] = self._manual["char_rule"]["schema_char"]
@@ -43,6 +48,7 @@ class Manual(object):
             tmp_rule["char_rule"]["schema_char"] = self._manual["char_rule"]["schema_char"]
             tmp_rule["char_rule"]["form_user"] = self._manual["char_rule"]["form_user"]
             tmp_rule["char_rule"]["form_char"] = self._manual["char_rule"]["form_char"]
+
         return tmp_rule
 
     def get_str_all(self, is_admin=False):

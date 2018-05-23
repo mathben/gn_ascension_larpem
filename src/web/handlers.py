@@ -919,6 +919,8 @@ class EditorCmdGenerateAndSaveHandler(jsonhandler.JsonHandler):
                     dct_char_rule["admin_form_char"] = doc_part
 
                 info["char_rule"] = dct_char_rule
+                info["point"] = document["point"]
+
                 # Link manual and form
                 info = self._manual.generate_link(info)
 
