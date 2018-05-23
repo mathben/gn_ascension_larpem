@@ -219,6 +219,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   }, true);
 
   $scope.$watch("model_char", function (value) {
+    $scope.update_point();
     if (value) {
       $scope.prettyModelChar = JSON.stringify(value, undefined, 2);
       // if ($scope.character == null) {
@@ -355,6 +356,26 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       //   continue
       // }
     }
+
+    // }
+    // for (var key in $scope.model_char) {
+    //   // check if the property/key is defined in the object itself, not in parent
+    //   if ($scope.model_char.hasOwnProperty(key)) {
+    //     for (var hab in $scope.model_char[key]) {
+    //       for (var i = 0; i < $scope.model_char[key].length; i++) {
+    //         console.info($scope.model_char[key][i]);
+    //       }
+    //     }
+    //   }
+    // }
+    //
+    // console.info("yo");
+    // console.info($scope.character_point);
+    // todo : update player
+    // $scope.player = value;
+  }, true);
+
+  $scope.update_point = function () {
     $scope.character_point = {};
     if (isDefined($scope.model_char.energie)) {
       for (var i = 0; i < $scope.model_char.energie.length; i++) {
@@ -448,23 +469,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         }
       }
     }
-    // }
-    // for (var key in $scope.model_char) {
-    //   // check if the property/key is defined in the object itself, not in parent
-    //   if ($scope.model_char.hasOwnProperty(key)) {
-    //     for (var hab in $scope.model_char[key]) {
-    //       for (var i = 0; i < $scope.model_char[key].length; i++) {
-    //         console.info($scope.model_char[key][i]);
-    //       }
-    //     }
-    //   }
-    // }
-    //
-    // console.info("yo");
-    // console.info($scope.character_point);
-    // todo : update player
-    // $scope.player = value;
-  }, true);
+  };
 
   $scope.$watch("player", function (value) {
     if (!value) {
