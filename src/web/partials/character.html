@@ -71,10 +71,8 @@
           </a>
         </div>
       </div>
-      <div>
-        <div ng-repeat="(key, value) in character_point">
-          {{! key }} : {{! value }}
-        </div>
+      <div ng-repeat="(key, value) in character_point">
+        {{! key }} : {{! value }}
       </div>
       <!--<div ng-hide="isMobile() || !html_qr_code" style="height:200px;width:200px;background:white"-->
       <!--ng-bind-html="html_qr_code"></div>-->
@@ -100,6 +98,9 @@
         <a class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
            ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
         </a>
+        <div ng-repeat="(key, value) in character_point">
+          {{! key }} : {{! value }}
+        </div>
       </div>
       <h2>Objet de début de jeu</h2>
       <div>
@@ -201,6 +202,9 @@
         <a class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
            ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
         </a>
+        <div ng-repeat="(key, value) in character_point">
+          {{! key }} : {{! value }}
+        </div>
       </div>
     </div><!-- end div form write -->
 

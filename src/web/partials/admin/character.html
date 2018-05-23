@@ -59,8 +59,6 @@
           <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
                 ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
           </span>
-        </div>
-        <div>
           <div ng-repeat="(key, value) in character_point">
             {{! key }} : {{! value }}
           </div>
@@ -115,6 +113,9 @@
           <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
                 ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
           </span>
+          <div ng-repeat="(key, value) in character_point">
+            {{! key }} : {{! value }}
+          </div>
         </div>
         <h2>Objet de début de jeu</h2>
         <div>
@@ -220,6 +221,9 @@
         <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
               ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
         </span>
+        <div ng-repeat="(key, value) in character_point">
+          {{! key }} : {{! value }}
+        </div>
       </div>
     </div> <!-- end div form write -->
 
