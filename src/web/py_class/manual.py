@@ -56,7 +56,10 @@ class Manual(object):
         return json.dumps(obj)
 
     def get_last_date_updated(self):
-        f = os.path.getmtime(self._manual_path)
+        if os.path.isfile(self._manual_path):
+            f = os.path.getmtime(self._manual_path)
+        else:
+            f = 0
         return f
 
     @staticmethod
