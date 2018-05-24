@@ -282,7 +282,10 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       }
     }
 
+
     if (isDefined($scope.model_char.habilites)) {
+      var lst_habilites = [];
+
       for (var i = 0; i < $scope.model_char.habilites.length; i++) {
         var obj = $scope.model_char.habilites[i];
         if (isDefined(obj.options)) {
@@ -296,18 +299,99 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
             }
 
             if (sub_key in $scope.model_database.point) {
-              var dct_key_point = $scope.model_database.point[sub_key];
+              lst_habilites.push(sub_key);
+            }
+          }
+        }
+      }
 
-              for (var key_point in dct_key_point) {
-                if (dct_key_point.hasOwnProperty(key_point)) {
-                  var point_value = dct_key_point[key_point];
-                  if (key_point in $scope.character_point) {
-                    $scope.character_point[key_point] += point_value;
-                  } else {
-                    $scope.character_point[key_point] = point_value;
-                  }
-                }
+      for (var i = 0; i < lst_habilites.length; i++) {
+        var sub_key = lst_habilites[i];
+        var dct_key_point = $scope.model_database.point[sub_key];
+
+        for (var key_point in dct_key_point) {
+          if (dct_key_point.hasOwnProperty(key_point)) {
+            var point_value = dct_key_point[key_point];
+
+            // Exception for salary, multiply PtPA
+            if (sub_key == "habilites_Salaire" && key_point == "PtPA") {
+              var total_value = point_value;
+              if (lst_habilites.indexOf("habilites_Alchimie") > -1) {
+                total_value += point_value;
               }
+              if (lst_habilites.indexOf("habilites_Enchantement") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Artisanat") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Forge") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Herboristerie") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Mixture de potions") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Marchandage_1") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Marchandage_2") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Marchandage_3") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Marchandage_4") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Marchandage_5") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste I - Herboristerie") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste I - Artisanat") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste I - Enchantement") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste I - Forge") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste I - Alchimie") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste I - Mixture de Potion") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste II - Herboristerie") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste II - Artisanat") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste II - Enchantement") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste II - Alchimie") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste II - Forge") > -1) {
+                total_value += point_value;
+              }
+              if (lst_habilites.indexOf("habilites_Sp\u00e9cialiste II - Mixture de Potion") > -1) {
+                total_value += point_value;
+              }
+              point_value = total_value;
+            }
+
+            if (key_point in $scope.character_point) {
+              $scope.character_point[key_point] += point_value;
+            } else {
+              $scope.character_point[key_point] = point_value;
             }
           }
         }
