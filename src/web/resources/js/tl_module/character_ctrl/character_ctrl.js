@@ -29,6 +29,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.new_character = false;
   $scope.no_character = true;
   $scope.character_point = {};
+  $scope.character_skill = [];
 
   $scope.model_database = {};
   $scope.model_user = {};
@@ -228,9 +229,16 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
 
   $scope.update_point = function () {
     $scope.character_point = {};
+    $scope.character_skill = [];
+
     if (isDefined($scope.model_char.energie)) {
       for (var i = 0; i < $scope.model_char.energie.length; i++) {
         var sub_key = "Energie_1";
+
+        if (sub_key in $scope.model_database.skill_manual) {
+          $scope.character_skill.push($scope.model_database.skill_manual[sub_key]);
+        }
+
         if (sub_key in $scope.model_database.point) {
           var dct_key_point = $scope.model_database.point[sub_key];
 
@@ -247,9 +255,15 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         }
       }
     }
+
     if (isDefined($scope.model_char.endurance)) {
       for (var i = 0; i < $scope.model_char.endurance.length; i++) {
         var sub_key = "Endurance_1";
+
+        if (sub_key in $scope.model_database.skill_manual) {
+          $scope.character_skill.push($scope.model_database.skill_manual[sub_key]);
+        }
+
         if (sub_key in $scope.model_database.point) {
           var dct_key_point = $scope.model_database.point[sub_key];
 
@@ -266,6 +280,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         }
       }
     }
+
     if (isDefined($scope.model_char.habilites)) {
       for (var i = 0; i < $scope.model_char.habilites.length; i++) {
         var obj = $scope.model_char.habilites[i];
@@ -274,6 +289,10 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
           // Find the associate point
           for (var j = 0; j < obj.options.length; j++) {
             var sub_key = "habilites_" + obj.options[j];
+
+            if (sub_key in $scope.model_database.skill_manual) {
+              $scope.character_skill.push($scope.model_database.skill_manual[sub_key]);
+            }
 
             if (sub_key in $scope.model_database.point) {
               var dct_key_point = $scope.model_database.point[sub_key];
@@ -293,6 +312,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         }
       }
     }
+
     if (isDefined($scope.model_char.technique_maitre)) {
       for (var i = 0; i < $scope.model_char.technique_maitre.length; i++) {
         var obj = $scope.model_char.technique_maitre[i];
@@ -301,6 +321,10 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
           // Find the associate point
           for (var j = 0; j < obj.options.length; j++) {
             var sub_key = "technique_maitre_" + obj.options[j];
+
+            if (sub_key in $scope.model_database.skill_manual) {
+              $scope.character_skill.push($scope.model_database.skill_manual[sub_key]);
+            }
 
             if (sub_key in $scope.model_database.point) {
               var dct_key_point = $scope.model_database.point[sub_key];

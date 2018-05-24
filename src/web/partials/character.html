@@ -172,6 +172,13 @@
         Total de sous-école de magie : <span
           style="font-weight:bold;color:cornflowerblue">{{! (character_point.hasOwnProperty('PtSousEcoleMagieMax')) ? character_point["PtSousEcoleMagieMax"] : 0 }}</span><br/>
       </div>
+      <h3>Habilité</h3>
+      <div>
+        <span ng-show="character_skill.length == 0" style="font-weight:bold;">Aucune</span>
+        <ol>
+          <li ng-repeat="value in character_skill track by $index">{{! value }}</li>
+        </ol>
+      </div>
       <h2>Approbation</h2>
       <p>
         Status de validation de la fiche par le maître du jeu :

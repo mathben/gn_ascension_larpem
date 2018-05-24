@@ -16,7 +16,7 @@ class Manual(object):
             with open(self._manual_path, encoding='utf-8') as manual_file:
                 self._manual = json.load(manual_file)
         else:
-            self._manual = {"manual": [], "lore": [], "char_rule": {}}
+            self._manual = {"manual": [], "lore": [], "char_rule": {}, "point": {}, "skill_manual": {}}
 
     def update(self, dct_manual, save=False):
         # Transform the object in json string
@@ -36,7 +36,8 @@ class Manual(object):
             "char_rule": {},
             "manual": self._manual["manual"],
             "lore": self._manual["lore"],
-            "point": self._manual["point"]
+            "point": self._manual["point"],
+            "skill_manual": self._manual["skill_manual"]
         }
         if is_admin:
             tmp_rule["char_rule"]["schema_user"] = self._manual["char_rule"]["schema_user"]

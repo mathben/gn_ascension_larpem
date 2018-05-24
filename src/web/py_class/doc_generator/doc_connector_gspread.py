@@ -81,6 +81,7 @@ class DocConnectorGSpread:
         self._connector_is_valid = True
         self._msg_share_invite = msg_share_invite
         self._doc_point = {}
+        self._doc_manual_skill = {}
 
         self._info_sheet = [
             {"type": DocType.DOC, "name": "manual", "permission": ["anyone"]},
@@ -217,6 +218,7 @@ class DocConnectorGSpread:
         worksheet_list = sh.worksheets()
         dct_doc = {}
         self._doc_point = {}
+        self._doc_manual_skill = {}
 
         for sheet_info in self._info_sheet:
             sheet_name = sheet_info.get("name")
@@ -270,6 +272,7 @@ class DocConnectorGSpread:
 
         # Add extra compilation about point page
         dct_doc["point"] = self._doc_point
+        dct_doc["skill_manual"] = self._doc_manual_skill
 
         self._generated_doc = dct_doc
         return True
@@ -900,8 +903,20 @@ class DocConnectorGSpread:
                 return False
             section["under_level_color"] = under_level_color
 
+        # HACK with model
+        updated_sub_key = sub_key
+        if "habilites" in model:
+            updated_sub_key = "habilites_" + sub_key
+        if "technique_maitre" in model:
+            updated_sub_key = "technique_maitre_" + sub_key
+
         if sub_key:
             section["sub_key"] = sub_key
+
+            # Add manual skill
+            if lst_bullet_description and type(lst_bullet_description) is list:
+                self._doc_manual_skill[updated_sub_key] = lst_bullet_description[-1]
+
         if model:
             section["model"] = model
         if point:
@@ -915,21 +930,16 @@ class DocConnectorGSpread:
                 print(self._error, file=sys.stderr)
                 return False
 
-            # HACK with model
-            if "habilites" in model:
-                sub_key = "habilites_" + sub_key
-            if "technique_maitre" in model:
-                sub_key = "technique_maitre_" + sub_key
-
-            if sub_key in self._doc_point:
+            if updated_sub_key in self._doc_point:
                 # HACK ignore "Contrebande" duplication
-                if "Contrebande" not in sub_key:
-                    msg = "Duplicated sub_key : %s" % sub_key
+                # TODO send a warning about duplication and not a failure
+                if "Contrebande" not in updated_sub_key:
+                    msg = "Duplicated sub_key : %s" % updated_sub_key
                     self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
                     print(self._error, file=sys.stderr)
                     return False
 
-            self._doc_point[sub_key] = dct_point
+            self._doc_point[updated_sub_key] = dct_point
         if hide_player:
             section["hide_player"] = hide_player
         if admin:
@@ -946,7 +956,8 @@ class DocConnectorGSpread:
                 continue
 
             if str_single_point.count(":") != 1:
-                msg = "Column 'Point' is wrong. Missing character ':' to separate key with value. Point : %s" % str_point
+                msg = "Column 'Point' is wrong. Missing character ':' to separate key with value. " \
+                      "Point : %s" % str_point
                 self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
                 print(self._error, file=sys.stderr)
                 return
