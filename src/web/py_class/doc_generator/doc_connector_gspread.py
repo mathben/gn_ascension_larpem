@@ -85,7 +85,9 @@ class DocConnectorGSpread:
 
         self._info_sheet = [
             {"type": DocType.DOC, "name": "manual", "permission": ["anyone"]},
+            {"type": DocType.DOC, "name": "manual", "permission": ["admin"], "is_admin": True},
             {"type": DocType.DOC, "name": "lore", "permission": ["anyone"]},
+            {"type": DocType.DOC, "name": "lore", "permission": ["admin"], "is_admin": True},
             {"type": DocType.SCHEMA, "name": "schema_user", "permission": ["user"]},
             {"type": DocType.SCHEMA, "name": "schema_char", "permission": ["user"]},
             {"type": DocType.FORM, "name": "form_user", "permission": ["user"], "is_admin": False},
@@ -699,14 +701,28 @@ class DocConnectorGSpread:
                 # Ignore empty line
                 continue
 
+            admin = row[1]
+
+            is_form_admin = sheet_info.get("is_admin", False)
+            if admin == "TRUE" or admin == "VRAI":
+                is_admin = True
+            else:
+                is_admin = False
+
+            # Ignore admin field when sheet is not admin
+            if not is_form_admin and is_admin:
+                continue
+
             try:
                 # Insert level 1 element
                 if level == 1:
-                    status = self._extract_section(row, line_number, doc_sheet_name, lst_doc_section)
+                    status = self._extract_section(row, line_number, doc_sheet_name, lst_doc_section, sheet_info)
                     # line_value = lst_doc_section
                     # lst_level_object = lst_doc_section
                     if status:
                         lst_level_object = [lst_doc_section[-1]]
+                    elif status is None:
+                        continue
                 else:
                     # level 2 and more
                     if not lst_level_object:
@@ -739,10 +755,12 @@ class DocConnectorGSpread:
                         lst_section = []
                         last_section["section"] = lst_section
 
-                    status = self._extract_section(row, line_number, doc_sheet_name, lst_section)
+                    status = self._extract_section(row, line_number, doc_sheet_name, lst_section, sheet_info)
 
                     if status:
                         lst_level_object.append(lst_section[-1])
+                    elif status is None:
+                        continue
 
                 if not status:
                     return
@@ -758,13 +776,14 @@ class DocConnectorGSpread:
 
         return lst_doc_section
 
-    def _extract_section(self, row, line_number, doc_sheet_name, lst_section):
+    def _extract_section(self, row, line_number, doc_sheet_name, lst_section, sheet_info):
         """
         Fill the recent section when read the spreadsheet row.
         :param row: The spreadsheet row.
         :param line_number: The row's index of spreadsheet.
         :param lst_section: list of parent section, to append new section.
         :param doc_sheet_name: Sheet name
+        :param sheet_info: Sheet information
         :return: True if success, else False
         """
 
@@ -780,6 +799,16 @@ class DocConnectorGSpread:
         model = row[9]
         point = row[10]
         hide_player = row[11]
+
+        is_form_admin = sheet_info.get("is_admin", False)
+        if admin == "TRUE" or admin == "VRAI":
+            is_admin = True
+        else:
+            is_admin = False
+
+        # Ignore admin field when sheet is not admin
+        if not is_form_admin and is_admin:
+            return
 
         # Check error
         if title and not key:
@@ -914,12 +943,12 @@ class DocConnectorGSpread:
             section["sub_key"] = sub_key
 
             # Add manual skill
-            if lst_bullet_description and type(lst_bullet_description) is list:
+            if not is_form_admin and lst_bullet_description and type(lst_bullet_description) is list:
                 self._doc_manual_skill[updated_sub_key] = lst_bullet_description[-1]
 
         if model:
             section["model"] = model
-        if point:
+        if not is_form_admin and point:
             dct_point = self._transform_point(line_number, doc_sheet_name, point)
             if dct_point is None:
                 return False
