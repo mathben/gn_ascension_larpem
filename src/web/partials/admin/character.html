@@ -111,7 +111,7 @@
           <span ng-show="diffTotalXp() < 0"><span style="color:indianred">est invalide, elle a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() * -1 }}</span> point<span
               ng-show="diffTotalXp() < -1">s</span> d'expérience de trop</span>.</span>
         </div>
-        <div ng-show="isMobile()">
+        <div ng-show="isMobile() && enable_debug">
           Xp consommé : {{! countTotalCostXp() }}
           <span class="text-decoration: none;" ng-hide="diffTotalXp() == 0"
                 ng-style="diffTotalXp() > 0 ? {'color': 'green'} : {'color': 'red'}">{{! showDiffTotalXp() }}
