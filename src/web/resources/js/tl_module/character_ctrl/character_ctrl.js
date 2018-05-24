@@ -13,6 +13,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   // todo move this variable in json
   $scope.xp_default = 6;
 
+  $scope.enable_debug = false;
   $scope.sheet_view = {};
   $scope.sheet_view.mode = "form_write";
 
