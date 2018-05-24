@@ -104,7 +104,7 @@
           Date de mise à jour : {{! model_char.date_modify * 1000 | UTCToNow: true }}
         </p>
         <div>
-          La fiche <span ng-show="diffTotalXp() == 0" style="color:cornflowerblue">est à jour</span>
+          La fiche <span ng-show="diffTotalXp() == 0"><span style="color:cornflowerblue">est à jour</span>.</span>
           <span ng-show="diffTotalXp() > 0">a <span style="color:green"><span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() }}</span> point<span
               ng-show="diffTotalXp() > 1">s</span> d'expérience à placer</span>.</span>
 
@@ -231,7 +231,7 @@
       </span>
 
       <div>
-        La fiche <span ng-show="diffTotalXp() == 0" style="color:cornflowerblue">est à jour</span>
+        La fiche <span ng-show="diffTotalXp() == 0"><span style="color:cornflowerblue">est à jour</span>.</span>
         <span ng-show="diffTotalXp() > 0">a <span style="color:green"><span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() }}</span> point<span
             ng-show="diffTotalXp() > 1">s</span> d'expérience à placer</span>.</span>
 
