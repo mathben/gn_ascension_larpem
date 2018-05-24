@@ -105,8 +105,9 @@
         </p>
         <div>
           La fiche <span ng-show="diffTotalXp() == 0" style="color:cornflowerblue">est à jour</span>
-          <span ng-show="diffTotalXp() > 0" style="color:green">a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() }}</span> points d'expérience à placer</span>
-          <span ng-show="diffTotalXp() < 0" style="color:indianred">est invalide, elle a <span style="font-weight: bold;text-decoration: underline">{{! diffTotalXp() * -1 }}</span> point d'expérience de trop</span>.
+          <span ng-show="diffTotalXp() > 0" style="color:green">a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() }}</span> point<span ng-show="diffTotalXp() > 1">s</span> d'expérience à placer</span>
+          <span ng-show="diffTotalXp() < 0" style="color:indianred">est invalide, elle a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() * -1 }}</span> point<span
+              ng-show="diffTotalXp() < -1">s</span></span> d'expérience de trop</span>.
         </div>
         <div ng-show="isMobile()">
           Xp consommé : {{! countTotalCostXp() }}
@@ -229,8 +230,9 @@
 
       <div>
         La fiche <span ng-show="diffTotalXp() == 0" style="color:cornflowerblue">est à jour</span>
-        <span ng-show="diffTotalXp() > 0" style="color:green">a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() }}</span> points d'expérience à placer</span>
-        <span ng-show="diffTotalXp() < 0" style="color:indianred">est invalide, elle a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() * -1 }}</span> point d'expérience de trop</span>.
+        <span ng-show="diffTotalXp() > 0" style="color:green">a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() }}</span> point<span ng-show="diffTotalXp() > 1">s</span> d'expérience à placer</span>
+        <span ng-show="diffTotalXp() < 0" style="color:indianred">est invalide, elle a <span style="font-weight:bold;text-decoration: underline">{{! diffTotalXp() * -1 }}</span> point<span
+            ng-show="diffTotalXp() < -1">s</span></span> d'expérience de trop</span>.
       </div>
 
       <div ng-show="enable_debug">
