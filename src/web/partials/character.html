@@ -308,9 +308,9 @@
         <div sf-schema="schema_char" sf-form="form_char" sf-model="model_char"></div>
       </form>
 
-      <a ng-show="status_send.enabled" ng-style="status_send.is_error ? {'color': 'red'} : {'color': 'green'}">
+      <span ng-show="status_send.enabled" ng-style="status_send.is_error ? {'color': 'red'} : {'color': 'green'}">
         {{! status_send.text }}
-      </a>
+      </span>
 
       <div>
         <!-- Sheet status -->
