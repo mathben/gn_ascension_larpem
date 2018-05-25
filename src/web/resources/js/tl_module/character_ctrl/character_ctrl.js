@@ -505,6 +505,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       } else {
         $scope.character_point["PtPA"] += 50;
       }
+      $scope.character_skill.push("Nouveau joueur +50 PA.")
     }
   };
 
