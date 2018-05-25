@@ -32,6 +32,14 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.character_point = {};
   $scope.character_skill = [];
 
+  $scope.xp_receive = 0;
+  $scope.xp_spend = 0;
+  $scope.xp_total = 0;
+
+  $scope.merite_receive = 0;
+  $scope.merite_spend = 0;
+  $scope.merite_total = 0;
+
   $scope.model_database = {};
   $scope.model_user = {};
   $scope.schema_user = {};
@@ -214,6 +222,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   };
 
   $scope.$watch("model_user", function (value) {
+    $scope.update_point();
     if (value) {
       $scope.prettyModelUser = JSON.stringify(value, undefined, 2);
     }
@@ -432,6 +441,9 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
 
     if (isDefined($scope.model_char.merite)) {
       for (var i = 0; i < $scope.model_char.merite.length; i++) {
+        if (isUndefined($scope.model_char.merite[i])) {
+          continue;
+        }
         // Find the associate point
         var sub_key = "merite_" + $scope.model_char.merite[i].sub_merite;
 
@@ -455,6 +467,28 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         }
       }
     }
+
+    // xp
+    var total_xp = 0;
+    if ($scope.character_point.hasOwnProperty("PtXp")) {
+      $scope.xp_spend = -($scope.character_point["PtXp"]);
+      total_xp -= $scope.xp_spend;
+    }
+    $scope.xp_receive = $scope.xp_default;
+    total_xp += $scope.xp_receive;
+    $scope.xp_total = total_xp;
+
+    // merite
+    var total_merite = 0;
+    if ($scope.character_point.hasOwnProperty("PtMerite")) {
+      $scope.merite_spend = -($scope.character_point["PtMerite"]);
+      total_merite -= $scope.merite_spend;
+    }
+    if ($scope.model_user.hasOwnProperty("total_point_merite")) {
+      $scope.merite_receive = $scope.model_user["total_point_merite"];
+      total_merite += $scope.merite_receive;
+    }
+    $scope.merite_total = total_merite;
   };
 
   $scope.$watch("player", function (value) {
@@ -759,81 +793,15 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     window.print();
   };
 
-  $scope.countTotalXp = function () {
-    if ($scope.character === null || $scope.model_char === null) {
-      return 0;
+  $scope.get_status_validation = function () {
+    // need to fix if some negative value
+    // xp is preferred to use all point
+    if ($scope.xp_total < 0 || $scope.merite_total < 0) {
+      return -1;
+    } else if ($scope.xp_total > 0) {
+      return 1;
     }
-    var total_xp = $scope.model_char.xp_naissance + $scope.model_char.xp_autre;
-    if (isDefined($scope.model_char.xp_gn_1_2016)) {
-      total_xp += $scope.model_char.xp_gn_1_2016;
-    }
-    if (isDefined($scope.model_char.xp_gn_2_2016)) {
-      total_xp += $scope.model_char.xp_gn_2_2016;
-    }
-    if (isDefined($scope.model_char.xp_gn_3_2016)) {
-      total_xp += $scope.model_char.xp_gn_3_2016;
-    }
-    if (isDefined($scope.model_char.xp_gn_4_2016)) {
-      total_xp += $scope.model_char.xp_gn_4_2016;
-    }
-    if (isDefined($scope.model_char.xp_donjon_1_2017)) {
-      total_xp += $scope.model_char.xp_donjon_1_2017;
-    }
-    if (isDefined($scope.model_char.xp_gn_1_2017)) {
-      total_xp += $scope.model_char.xp_gn_1_2017;
-    }
-    if (isDefined($scope.model_char.xp_gn_2_2017)) {
-      total_xp += $scope.model_char.xp_gn_2_2017;
-    }
-    if (isDefined($scope.model_char.xp_gn_3_2017)) {
-      total_xp += $scope.model_char.xp_gn_3_2017;
-    }
-    if (isDefined($scope.model_char.xp_gn_4_2017)) {
-      total_xp += $scope.model_char.xp_gn_4_2017;
-    }
-    return total_xp;
-  };
-
-  $scope.countTotalCostXp = function () {
-    if ($scope.character === null || $scope.model_char === null) {
-      return 0;
-    }
-    var total_xp = 0;
-    if (isDefined($scope.model_char.energie)) {
-      total_xp += $scope.model_char.energie.length;
-    }
-    if (isDefined($scope.model_char.endurance)) {
-      total_xp += $scope.model_char.endurance.length;
-    }
-    if (isDefined($scope.model_char.habilites)) {
-      for (var i = 0; i < $scope.model_char.habilites.length; i++) {
-        var obj = $scope.model_char.habilites[i];
-        if (isDefined(obj.options)) {
-          total_xp += obj.options.length;
-        }
-      }
-    }
-    if (isDefined($scope.model_char.technique_maitre)) {
-      for (var i = 0; i < $scope.model_char.technique_maitre.length; i++) {
-        var obj = $scope.model_char.technique_maitre[i];
-        if (isDefined(obj.options)) {
-          total_xp += obj.options.length;
-        }
-      }
-    }
-    return total_xp;
-  };
-
-  $scope.diffTotalXp = function () {
-    return $scope.countTotalXp() - $scope.countTotalCostXp()
-  };
-
-  $scope.showDiffTotalXp = function () {
-    var diff = $scope.diffTotalXp();
-    if (diff > 0) {
-      return "+" + diff;
-    }
-    return diff;
+    return 0;
   };
 
   $scope.get_html_qr_code = function () {
@@ -846,19 +814,6 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     qr.make();
     $scope.html_qr_code = qr.createImgTag();
   };
-
-// socket.onmessage = function (e) {
-//   $scope.message = JSON.parse(e.data);
-//   console.log($scope.message);
-//   $scope.$apply();
-// };
-
-// For admin page
-//  $http.get("/cmd/character_view").success(
-//    function (response/*, status, headers, config*/) {
-//      $scope.ddb_user = response.data;
-//    }
-//  );
 
   $scope.is_main = $window.location.hash.substring($window.location.hash.length - 4) == "#!/";
   if ($scope.is_main) {
