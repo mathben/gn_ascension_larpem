@@ -296,6 +296,8 @@ class DocConnectorGSpread:
         # This is use to keep reference on last object dependant on level
         lst_level_object = []
         for lst_item in lst_line:
+            line_number += 1
+
             level = lst_item[0]
             name = lst_item[1]
             s_type = lst_item[2]
@@ -308,7 +310,8 @@ class DocConnectorGSpread:
             unique_items = lst_item[9]
             description = lst_item[10]
 
-            line_number += 1
+            if not level:
+                continue
 
             # Validation section
 
@@ -477,6 +480,8 @@ class DocConnectorGSpread:
         # This is use to keep reference on last object dependant on level
         lst_level_object = [lst_value]
         for lst_item in lst_line:
+            line_number += 1
+
             level = lst_item[0]
             is_admin = lst_item[1]
             s_key = lst_item[2]
@@ -492,7 +497,8 @@ class DocConnectorGSpread:
             read_by_player = lst_item[12]
             read_only_player = lst_item[13]
 
-            line_number += 1
+            if not level:
+                continue
 
             if is_admin == "TRUE" or is_admin == "VRAI":
                 is_admin = True
@@ -682,6 +688,7 @@ class DocConnectorGSpread:
             # Ignore if level is empty
             if not level:
                 continue
+
             elif level.isdigit():
                 # Validate level value
                 level = int(level)
@@ -938,6 +945,8 @@ class DocConnectorGSpread:
             updated_sub_key = "habilites_" + sub_key
         if "technique_maitre" in model:
             updated_sub_key = "technique_maitre_" + sub_key
+        if "merite" in model:
+            updated_sub_key = "merite_" + sub_key
 
         if sub_key:
             section["sub_key"] = sub_key
@@ -948,16 +957,16 @@ class DocConnectorGSpread:
 
         if model:
             section["model"] = model
-        if not is_form_admin and point:
+        if not is_form_admin and point and sub_key:
             dct_point = self._transform_point(line_number, doc_sheet_name, point)
             if dct_point is None:
                 return False
             section["point"] = dct_point
-            if not sub_key:
-                msg = "sub_key is empty."
-                self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
-                print(self._error, file=sys.stderr)
-                return False
+            # if not sub_key:
+            #     msg = "sub_key is empty."
+            #     self._error = "L.%s S.%s: %s" % (line_number, doc_sheet_name, msg)
+            #     print(self._error, file=sys.stderr)
+            #     return False
 
             if updated_sub_key in self._doc_point:
                 # HACK ignore "Contrebande" duplication

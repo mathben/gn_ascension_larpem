@@ -429,6 +429,32 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         }
       }
     }
+
+    if (isDefined($scope.model_char.merite)) {
+      for (var i = 0; i < $scope.model_char.merite.length; i++) {
+        // Find the associate point
+        var sub_key = "merite_" + $scope.model_char.merite[i].sub_merite;
+
+        if (sub_key in $scope.model_database.skill_manual) {
+          $scope.character_skill.push($scope.model_database.skill_manual[sub_key]);
+        }
+
+        if (sub_key in $scope.model_database.point) {
+          var dct_key_point = $scope.model_database.point[sub_key];
+
+          for (var key_point in dct_key_point) {
+            if (dct_key_point.hasOwnProperty(key_point)) {
+              var point_value = dct_key_point[key_point];
+              if (key_point in $scope.character_point) {
+                $scope.character_point[key_point] += point_value;
+              } else {
+                $scope.character_point[key_point] = point_value;
+              }
+            }
+          }
+        }
+      }
+    }
   };
 
   $scope.$watch("player", function (value) {
@@ -460,6 +486,9 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       if (!isDefined(firstChar.sous_ecole)) {
         $scope.model_char.sous_ecole = [];
       }
+      if (!isDefined(firstChar.merite)) {
+        $scope.model_char.merite = [];
+      }
       if (!isDefined(firstChar.xp_naissance)) {
         $scope.model_char.xp_naissance = $scope.xp_default;
       }
@@ -475,6 +504,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       $scope.model_char.technique_maitre = [];
       $scope.model_char.rituel = [];
       $scope.model_char.sous_ecole = [];
+      $scope.model_char.merite = [];
       $scope.model_char.xp_naissance = $scope.xp_default;
       $scope.model_char.xp_autre = 0;
 
