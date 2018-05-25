@@ -443,7 +443,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
 
     if (isDefined($scope.model_char.merite)) {
       for (var i = 0; i < $scope.model_char.merite.length; i++) {
-        if (isUndefined($scope.model_char.merite[i])) {
+        if (isUndefined($scope.model_char.merite[i]) || !$scope.model_char.merite[i]) {
           continue;
         }
         // Find the associate point
