@@ -804,11 +804,18 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     return 0;
   };
 
+  $scope.get_character_point = function (name) {
+    if (!$scope.character_point.hasOwnProperty(name)) {
+      return 0;
+    }
+    return $scope.character_point[name];
+  };
+
   $scope.get_html_qr_code = function () {
     var typeNumber = 5;
     var errorCorrectionLevel = 'L';
     var qr = qrcode(typeNumber, errorCorrectionLevel);
-    var data = $window.location.origin + "/character#/?id_player=" + $scope.player.id
+    var data = $window.location.origin + "/character#/?id_player=" + $scope.player.id;
     $scope.url_qr_code = data;
     qr.addData(data);
     qr.make();
