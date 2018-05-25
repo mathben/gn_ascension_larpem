@@ -115,8 +115,8 @@
             {{! key }} : {{! value }}
           </div>
         </div>
-
       </div>
+
       <h2>Objet de début de jeu</h2>
       <div>
         <span
@@ -131,7 +131,23 @@
               character_point.hasOwnProperty('PtComposanteOuProduction') || 
               character_point.hasOwnProperty('PtJoyau') || 
               character_point.hasOwnProperty('PtPA') || 
-              character_point.hasOwnProperty('PtAppuieCriminel')"
+              character_point.hasOwnProperty('PtAppuiCommercial') || 
+              character_point.hasOwnProperty('PtAppuiMilitaire') || 
+              character_point.hasOwnProperty('PtAppuiReligieux') || 
+              character_point.hasOwnProperty('PtAppuiPolitique') || 
+              character_point.hasOwnProperty('PtAppuiCriminel') || 
+              character_point.hasOwnProperty('PtArt') || 
+              character_point.hasOwnProperty('PtSphere') || 
+              character_point.hasOwnProperty('PtLSanglite') || 
+              character_point.hasOwnProperty('PtLMalachite') || 
+              character_point.hasOwnProperty('PtLBluam') || 
+              character_point.hasOwnProperty('PtLOr') || 
+              character_point.hasOwnProperty('PtLArgent') || 
+              character_point.hasOwnProperty('PtLChoix') || 
+              character_point.hasOwnProperty('PtEsclave') || 
+              character_point.hasOwnProperty('PtRation') || 
+              character_point.hasOwnProperty('PtPierreAme') || 
+              character_point.hasOwnProperty('PtObjetFamilial')"
             style="font-weight:bold;">Aucun
           </span>
         <ol>
@@ -173,11 +189,60 @@
           <li ng-show="character_point.hasOwnProperty('PtPA')">
             <span style="font-weight:bold;color:forestgreen">{{! character_point["PtPA"] }}</span> pièce<span ng-show="character_point['PtPA'] > 1">s</span> d'argent
           </li>
-          <li ng-show="character_point.hasOwnProperty('PtAppuieCriminel')">
-            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtAppuieCriminel"] }}</span> appuie<span ng-show="character_point['PtAppuieCriminel'] > 1">s</span> criminel
+          <li ng-show="character_point.hasOwnProperty('PtAppuiCommercial')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtAppuiCommercial"] }}</span> appuie<span ng-show="character_point['PtAppuiCommercial'] > 1">s</span> commercial
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtAppuiMilitaire')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtAppuiMilitaire"] }}</span> appuie<span ng-show="character_point['PtAppuiMilitaire'] > 1">s</span> militaire
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtAppuiReligieux')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtAppuiReligieux"] }}</span> appuie<span ng-show="character_point['PtAppuiReligieux'] > 1">s</span> religieux
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtAppuiPolitique')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtAppuiPolitique"] }}</span> appuie<span ng-show="character_point['PtAppuiPolitique'] > 1">s</span> politique
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtAppuiCriminel')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtAppuiCriminel"] }}</span> appuie<span ng-show="character_point['PtAppuiCriminel'] > 1">s</span> criminel
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtArt')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtArt"] }}</span> oeuvre<span ng-show="character_point['PtArt'] > 1">s</span> d'art
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtSphere')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtSphere"] }}</span> sphère<span ng-show="character_point['PtSphere'] > 1">s</span> de magie
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtLSanglite')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtLSanglite"] }}</span> lingot<span ng-show="character_point['PtLSanglite'] > 1">s</span> de Sanglite
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtLMalachite')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtLMalachite"] }}</span> lingot<span ng-show="character_point['PtLMalachite'] > 1">s</span> de Malachite
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtLBluam')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtLBluam"] }}</span> lingot<span ng-show="character_point['PtLBluam'] > 1">s</span> de Bluam
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtLOr')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtLOr"] }}</span> lingot<span ng-show="character_point['PtLOr'] > 1">s</span> d'Or
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtLArgent')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtLArgent"] }}</span> lingot<span ng-show="character_point['PtLArgent'] > 1">s</span> d'Argent
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtLChoix')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtLChoix"] }}</span> lingot<span ng-show="character_point['PtLChoix'] > 1">s</span> au choix
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtEsclave')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtEsclave"] }}</span> esclave<span ng-show="character_point['PtEsclave'] > 1">s</span> au choix
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtRation')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtRation"] }}</span> boite<span ng-show="character_point['PtRation'] > 1">s</span> de ration
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtPierreAme')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtPierreAme"] }}</span> pierre<span ng-show="character_point['PtPierreAme'] > 1">s</span> d'âme
+          </li>
+          <li ng-show="character_point.hasOwnProperty('PtObjetFamilial')">
+            <span style="font-weight:bold;color:forestgreen">{{! character_point["PtObjetFamilial"] }}</span> objet<span ng-show="character_point['PtObjetFamilial'] > 1">s</span> familial
           </li>
         </ol>
       </div>
+
       <h2> Caractéristique du personnage</h2>
       <div>
         <ul>
@@ -211,6 +276,15 @@
           <li ng-repeat="value in character_skill track by $index">{{! value }}</li>
         </ol>
       </div>
+
+      <h3>Mérite</h3>
+      <div>
+        <span ng-show="character_merite.length == 0" style="font-weight:bold;">Aucun</span>
+        <ol>
+          <li ng-repeat="value in character_merite track by $index" style="color:lightyellow">{{! value }}</li>
+        </ol>
+      </div>
+
       <h2>Approbation</h2>
       <p>
         Status de validation de la fiche par le maître du jeu :

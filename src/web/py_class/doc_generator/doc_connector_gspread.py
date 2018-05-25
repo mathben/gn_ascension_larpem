@@ -953,10 +953,10 @@ class DocConnectorGSpread:
 
             # Add manual skill
             if not is_form_admin:
-                if lst_bullet_description and type(lst_bullet_description) is list:
-                    self._doc_manual_skill[updated_sub_key] = lst_bullet_description[-1]
-                elif lst_second_bullet_description and type(lst_second_bullet_description) is list:
-                    self._doc_manual_skill[updated_sub_key] = lst_second_bullet_description[-1]
+                if bullet_description:
+                    self._doc_manual_skill[updated_sub_key] = bullet_description
+                elif second_bullet_description:
+                    self._doc_manual_skill[updated_sub_key] = second_bullet_description
 
         if model:
             section["model"] = model

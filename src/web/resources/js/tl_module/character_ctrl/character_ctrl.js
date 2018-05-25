@@ -31,6 +31,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.no_character = true;
   $scope.character_point = {};
   $scope.character_skill = [];
+  $scope.character_merite = [];
 
   $scope.xp_receive = 0;
   $scope.xp_spend = 0;
@@ -240,6 +241,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.update_point = function () {
     $scope.character_point = {};
     $scope.character_skill = [];
+    $scope.character_merite = [];
 
     if (isDefined($scope.model_char.energie)) {
       for (var i = 0; i < $scope.model_char.energie.length; i++) {
@@ -448,7 +450,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         var sub_key = "merite_" + $scope.model_char.merite[i].sub_merite;
 
         if (sub_key in $scope.model_database.skill_manual) {
-          $scope.character_skill.push($scope.model_database.skill_manual[sub_key]);
+          $scope.character_merite.push($scope.model_database.skill_manual[sub_key]);
         }
 
         if (sub_key in $scope.model_database.point) {
