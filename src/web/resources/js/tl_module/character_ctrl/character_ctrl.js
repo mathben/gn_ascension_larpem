@@ -491,6 +491,15 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       total_merite += $scope.merite_receive;
     }
     $scope.merite_total = total_merite;
+
+    // New player
+    if ($scope.xp_receive == $scope.xp_default) {
+      if (!$scope.character_point.hasOwnProperty("PtPA")) {
+        $scope.character_point["PtPA"] = 50;
+      } else {
+        $scope.character_point["PtPA"] += 50;
+      }
+    }
   };
 
   $scope.$watch("player", function (value) {
