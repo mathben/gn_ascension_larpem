@@ -474,8 +474,10 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     var total_xp = 0;
     if ($scope.character_point.hasOwnProperty("PtXp")) {
       $scope.xp_spend = -($scope.character_point["PtXp"]);
-      total_xp -= $scope.xp_spend;
+    } else {
+      $scope.xp_spend = 0;
     }
+    total_xp -= $scope.xp_spend;
     $scope.xp_receive = $scope.xp_default;
     total_xp += $scope.xp_receive;
     $scope.xp_total = total_xp;
@@ -484,12 +486,16 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     var total_merite = 0;
     if ($scope.character_point.hasOwnProperty("PtMerite")) {
       $scope.merite_spend = -($scope.character_point["PtMerite"]);
-      total_merite -= $scope.merite_spend;
+    } else {
+      $scope.merite_spend = 0;
     }
     if ($scope.model_user.hasOwnProperty("total_point_merite")) {
       $scope.merite_receive = $scope.model_user["total_point_merite"];
-      total_merite += $scope.merite_receive;
+    } else {
+      $scope.merite_receive = 0;
     }
+    total_merite -= $scope.merite_spend;
+    total_merite += $scope.merite_receive;
     $scope.merite_total = total_merite;
 
     // New player
