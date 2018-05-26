@@ -244,10 +244,9 @@
         </ol>
       </div>
 
-      <h3>Objet personnalisé</h3>
-      <div>
-        <span ng-hide="model_char.objet_debut_jeu" style="font-weight:bold;">Aucun</span>
-        <span ng-show="model_char.objet_debut_jeu" style="white-space: pre;">{{! model_char.objet_debut_jeu }}</span>
+      <div ng-show="model_char.objet_debut_jeu">
+        <h3>Objet personnalisé</h3>
+        <span style="white-space: pre;">{{! model_char.objet_debut_jeu }}</span>
       </div>
 
       <h2> Caractéristique du personnage</h2>
@@ -284,9 +283,8 @@
         </ol>
       </div>
 
-      <h3>Mérite</h3>
-      <div>
-        <span ng-show="character_merite.length == 0" style="font-weight:bold;">Aucun</span>
+      <div ng-hide="character_merite.length == 0">
+        <h3>Mérite</h3>
         <ol>
           <li ng-repeat="value in character_merite track by $index" style="color:lightyellow">{{! value }}</li>
         </ol>
