@@ -13,7 +13,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   // todo move this variable in json
   $scope.xp_default = 6;
 
-  $scope.enable_debug = false;
+  $scope.enable_debug = true;
   $scope.sheet_view = {};
   $scope.sheet_view.mode = "form_write";
 
@@ -32,10 +32,15 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.character_point = {};
   $scope.character_skill = [];
   $scope.character_merite = [];
+  $scope.character_esclave = [];
 
   $scope.xp_receive = 0;
   $scope.xp_spend = 0;
   $scope.xp_total = 0;
+
+  $scope.capacity_sous_ecole = 0;
+  $scope.count_sous_ecole = 0;
+  $scope.diff_sous_ecole = 0;
 
   $scope.merite_receive = 0;
   $scope.merite_spend = 0;
@@ -470,6 +475,35 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       }
     }
 
+    if (isDefined($scope.model_char.esclave)) {
+      for (var i = 0; i < $scope.model_char.esclave.length; i++) {
+        if (isUndefined($scope.model_char.esclave[i]) || !$scope.model_char.esclave[i]) {
+          continue;
+        }
+        // Find the associate point
+        var sub_key = "esclave_" + $scope.model_char.esclave[i].sub_esclave;
+
+        if (sub_key in $scope.model_database.skill_manual) {
+          $scope.character_esclave.push($scope.model_database.skill_manual[sub_key]);
+        }
+
+        if (sub_key in $scope.model_database.point) {
+          var dct_key_point = $scope.model_database.point[sub_key];
+
+          for (var key_point in dct_key_point) {
+            if (dct_key_point.hasOwnProperty(key_point)) {
+              var point_value = dct_key_point[key_point];
+              if (key_point in $scope.character_point) {
+                $scope.character_point[key_point] += point_value;
+              } else {
+                $scope.character_point[key_point] = point_value;
+              }
+            }
+          }
+        }
+      }
+    }
+
     // xp
     var total_xp = 0;
     if ($scope.character_point.hasOwnProperty("PtXp")) {
@@ -497,6 +531,18 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     total_merite -= $scope.merite_spend;
     total_merite += $scope.merite_receive;
     $scope.merite_total = total_merite;
+
+    $scope.count_sous_ecole = 0;
+    if ($scope.model_char.hasOwnProperty("sous_ecole")) {
+      for (var i = 0; i < $scope.model_char["sous_ecole"].length; i++) {
+        var obj = $scope.model_char["sous_ecole"][i];
+        if (obj.hasOwnProperty("sous_ecole")) {
+          $scope.count_sous_ecole += 1;
+        }
+      }
+    }
+    $scope.capacity_sous_ecole = $scope.get_character_point('PtSousEcoleMagieMax');
+    $scope.diff_sous_ecole = $scope.capacity_sous_ecole - $scope.count_sous_ecole;
 
     // New player
     if ($scope.xp_receive == $scope.xp_default) {
@@ -541,6 +587,9 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       if (!isDefined(firstChar.merite)) {
         $scope.model_char.merite = [];
       }
+      if (!isDefined(firstChar.esclave)) {
+        $scope.model_char.esclave = [];
+      }
       if (!isDefined(firstChar.xp_naissance)) {
         $scope.model_char.xp_naissance = $scope.xp_default;
       }
@@ -557,6 +606,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       $scope.model_char.rituel = [];
       $scope.model_char.sous_ecole = [];
       $scope.model_char.merite = [];
+      $scope.model_char.esclave = [];
       $scope.model_char.xp_naissance = $scope.xp_default;
       $scope.model_char.xp_autre = 0;
 
@@ -814,9 +864,9 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.get_status_validation = function () {
     // need to fix if some negative value
     // xp is preferred to use all point
-    if ($scope.xp_total < 0 || $scope.merite_total < 0) {
+    if ($scope.xp_total < 0 || $scope.merite_total < 0 || $scope.diff_sous_ecole < 0) {
       return -1;
-    } else if ($scope.xp_total > 0) {
+    } else if ($scope.xp_total > 0 || $scope.diff_sous_ecole > 0) {
       return 1;
     }
     return 0;

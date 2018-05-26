@@ -943,10 +943,12 @@ class DocConnectorGSpread:
         updated_sub_key = sub_key
         if "habilites" in model:
             updated_sub_key = "habilites_" + sub_key
-        if "technique_maitre" in model:
+        elif "technique_maitre" in model:
             updated_sub_key = "technique_maitre_" + sub_key
-        if "merite" in model:
+        elif "merite" in model:
             updated_sub_key = "merite_" + sub_key
+        elif "esclave" in model:
+            updated_sub_key = "esclave_" + sub_key
 
         if sub_key:
             section["sub_key"] = sub_key
