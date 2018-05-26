@@ -46,6 +46,10 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.merite_spend = 0;
   $scope.merite_total = 0;
 
+  $scope.count_master_tech = 0;
+  $scope.validated_count_master_tech = false;
+  $scope.first_game_unlock_master_tech = false;
+
   $scope.model_database = {};
   $scope.model_user = {};
   $scope.schema_user = {};
@@ -140,7 +144,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     } else {
       txt_append = '?';
     }
-    return txt_append + " " + user.name;
+    return user.name + " " + txt_append;
   };
 
   $scope.send_approbation = function (status) {
@@ -247,6 +251,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     $scope.character_point = {};
     $scope.character_skill = [];
     $scope.character_merite = [];
+    $scope.count_master_tech = 0;
 
     if (isDefined($scope.model_char.energie)) {
       for (var i = 0; i < $scope.model_char.energie.length; i++) {
@@ -429,6 +434,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
 
             if (sub_key in $scope.model_database.point) {
               var dct_key_point = $scope.model_database.point[sub_key];
+              $scope.count_master_tech += 1;
 
               for (var key_point in dct_key_point) {
                 if (dct_key_point.hasOwnProperty(key_point)) {
@@ -552,6 +558,14 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
         $scope.character_point["PtPA"] += 50;
       }
       $scope.character_skill.push("Nouveau joueur +50 PA.")
+    }
+
+    // Special buy pass, can use 1 master tech
+    $scope.first_game_unlock_master_tech = $scope.model_user["passe_saison_2018"];
+    if ($scope.count_master_tech > 1 || ($scope.count_master_tech == 1 && !$scope.first_game_unlock_master_tech)) {
+      $scope.validated_count_master_tech = false;
+    } else {
+      $scope.validated_count_master_tech = true;
     }
   };
 
@@ -864,9 +878,9 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.get_status_validation = function () {
     // need to fix if some negative value
     // xp is preferred to use all point
-    if ($scope.xp_total < 0 || $scope.merite_total < 0 || $scope.diff_sous_ecole < 0 || !$scope.model_char.name || !$scope.model_char.faction) {
+    if ($scope.xp_total < 0 || $scope.merite_total < 0 || $scope.diff_sous_ecole < 0 || !$scope.model_char.name || !$scope.model_char.faction || !$scope.validated_count_master_tech) {
       return -1;
-    } else if ($scope.xp_total > 0 || $scope.diff_sous_ecole > 0) {
+    } else if ($scope.xp_total > 0 || $scope.diff_sous_ecole > 0 || ($scope.count_master_tech == 0 && $scope.first_game_unlock_master_tech)) {
       return 1;
     }
     return 0;

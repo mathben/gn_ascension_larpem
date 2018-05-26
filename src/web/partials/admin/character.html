@@ -95,6 +95,26 @@
 
       <div ng-hide="new_player">
         <h1>Information pour le joueur</h1>
+
+        <div>
+          <h2>Approbation</h2>
+          <p>
+            Approbation de la fiche :
+            <span style="color:cornflowerblue" ng-show="is_approbation_new(player)">✪ nouveau</span>
+            <span style="color:green" ng-show="is_approbation_approved(player)">✓ approuvé</span>
+            <span style="color:yellow" ng-show="is_approbation_unapproved(player)">✗ en attente</span>
+            <span style="color:darkgray" ng-show="is_approbation_inactive(player)">✞ inactif</span>
+            <span style="color:indianred" ng-show="is_approbation_to_correct(player)">✐ à corriger</span>
+            <br/>
+            <span ng-show="model_char.approbation.date">Date d'approbation : {{! model_char.approbation.date * 1000 | UTCToNow: true }}</span><br/>
+            <button class="btn btn-success" ng-click="send_approbation(1)" ng-hide="is_approbation_approved(player)">Approuver ✓</button>
+            <button class="btn btn-danger" ng-click="send_approbation(4)" ng-hide="is_approbation_to_correct(player)">À corriger ✐</button>
+            <button class="btn btn-warning" ng-click="send_approbation(2)" ng-hide="is_approbation_unapproved(player)">Désapprouver ✗</button>
+            <button class="btn btn-default" ng-click="send_approbation(3)" ng-hide="is_approbation_inactive(player)">Inactif ✞</button>
+            <button class="btn btn-info" ng-click="send_approbation(0)" ng-hide="is_approbation_new(player)">Nouveau ✪</button>
+          </p>
+        </div>
+
         <h2>État de la fiche</h2>
         <p>
           Date de création : {{! model_char.date_creation * 1000 | UTCToNow: true }}<br/>
@@ -115,6 +135,12 @@
               style="font-weight:bold;text-decoration: underline">{{! diff_sous_ecole }}</span> sous-école à choisir</span>.</span>
           <span ng-show="!model_char.name"><span style="color:red">Nom du personnage est manquant</span>.</span>
           <span ng-show="!model_char.faction"><span style="color:red">Faction manquante</span>.</span>
+          <span ng-show="count_master_tech == 0 && first_game_unlock_master_tech">Il y a <span style="color:yellow"><span
+              style="font-weight:bold;text-decoration: underline">1</span> technique de maître à placer</span>.</span>
+          <span ng-show="count_master_tech > 1 && first_game_unlock_master_tech">Il y a <span style="color:red"><span
+              style="font-weight:bold;text-decoration: underline">{{! count_master_tech - 1 }}</span> technique de maitre à enlever</span>.</span>
+          <span ng-show="count_master_tech > 0 && !first_game_unlock_master_tech"><span
+              style="color:red">Pour avoir accès à une technique de maître, il faut acheter une passe saison 2018</span>.</span>
         </div>
 
         <div ng-show="isMobile() && enable_debug">
@@ -307,22 +333,6 @@
           </ol>
         </div>
 
-        <h2>Approbation</h2>
-        <p>
-          Approbation de la fiche :
-          <span style="color:cornflowerblue" ng-show="is_approbation_new(player)">✪ nouveau</span>
-          <span style="color:green" ng-show="is_approbation_approved(player)">✓ approuvé</span>
-          <span style="color:yellow" ng-show="is_approbation_unapproved(player)">✗ en attente</span>
-          <span style="color:darkgray" ng-show="is_approbation_inactive(player)">✞ inactif</span>
-          <span style="color:indianred" ng-show="is_approbation_to_correct(player)">✐ à corriger</span>
-          <br/>
-          <span ng-show="model_char.approbation.date">Date d'approbation : {{! model_char.approbation.date * 1000 | UTCToNow: true }}</span><br/>
-          <button class="btn btn-success" ng-click="send_approbation(1)" ng-hide="is_approbation_approved(player)">Approuver ✓</button>
-          <button class="btn btn-danger" ng-click="send_approbation(4)" ng-hide="is_approbation_to_correct(player)">À corriger ✐</button>
-          <button class="btn btn-warning" ng-click="send_approbation(2)" ng-hide="is_approbation_unapproved(player)">Désapprouver ✗</button>
-          <button class="btn btn-default" ng-click="send_approbation(3)" ng-hide="is_approbation_inactive(player)">Inactif ✞</button>
-          <button class="btn btn-info" ng-click="send_approbation(0)" ng-hide="is_approbation_new(player)">Nouveau ✪</button>
-        </p>
         <hr/>
       </div>
 
@@ -352,6 +362,11 @@
             style="font-weight:bold;text-decoration: underline">{{! diff_sous_ecole }}</span> sous-école à choisir</span>.</span>
         <span ng-show="!model_char.name"><span style="color:red">Nom du personnage est manquant</span>.</span>
         <span ng-show="!model_char.faction"><span style="color:red">Faction manquante</span>.</span>
+        <span ng-show="count_master_tech == 0 && first_game_unlock_master_tech">Il y a <span style="color:yellow"><span
+            style="font-weight:bold;text-decoration: underline">1</span> technique de maître à placer</span>.</span>
+        <span ng-show="count_master_tech > 1 && first_game_unlock_master_tech">Il y a <span style="color:red"><span
+            style="font-weight:bold;text-decoration: underline">{{! count_master_tech - 1 }}</span> technique de maitre à enlever</span>.</span>
+        <span ng-show="count_master_tech > 0 && !first_game_unlock_master_tech"><span style="color:red">Pour avoir accès à une technique de maître, il faut acheter une passe saison 2018</span>.</span>
       </div>
 
       <div ng-show="enable_debug">
