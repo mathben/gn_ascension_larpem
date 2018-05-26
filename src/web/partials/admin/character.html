@@ -113,6 +113,8 @@
               style="font-weight:bold;text-decoration: underline">{{! -(diff_sous_ecole) }}</span> sous-école à enlever</span>.</span>
           <span ng-show="diff_sous_ecole > 0">Il y a <span style="color:yellow"><span
               style="font-weight:bold;text-decoration: underline">{{! diff_sous_ecole }}</span> sous-école à choisir</span>.</span>
+          <span ng-show="!model_char.name"><span style="color:red">Nom du personnage est manquant</span>.</span>
+          <span ng-show="!model_char.faction"><span style="color:red">Faction manquante</span>.</span>
         </div>
 
         <div ng-show="isMobile() && enable_debug">
@@ -348,6 +350,8 @@
             style="font-weight:bold;text-decoration: underline">{{! -(diff_sous_ecole) }}</span> sous-école à enlever</span>.</span>
         <span ng-show="diff_sous_ecole > 0">Il y a <span style="color:yellow"><span
             style="font-weight:bold;text-decoration: underline">{{! diff_sous_ecole }}</span> sous-école à choisir</span>.</span>
+        <span ng-show="!model_char.name"><span style="color:red">Nom du personnage est manquant</span>.</span>
+        <span ng-show="!model_char.faction"><span style="color:red">Faction manquante</span>.</span>
       </div>
 
       <div ng-show="enable_debug">

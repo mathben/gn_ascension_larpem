@@ -864,7 +864,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.get_status_validation = function () {
     // need to fix if some negative value
     // xp is preferred to use all point
-    if ($scope.xp_total < 0 || $scope.merite_total < 0 || $scope.diff_sous_ecole < 0) {
+    if ($scope.xp_total < 0 || $scope.merite_total < 0 || $scope.diff_sous_ecole < 0 || !$scope.model_char.name || !$scope.model_char.faction) {
       return -1;
     } else if ($scope.xp_total > 0 || $scope.diff_sous_ecole > 0) {
       return 1;
