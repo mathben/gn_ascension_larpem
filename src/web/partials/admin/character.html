@@ -97,6 +97,19 @@
         </div>
       </div>
 
+      <ul class="nav nav-pills">
+        <li class="active"><a data-toggle="pill" href="#menu_form">Formulaire</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sommaire <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#menu_attribut" data-toggle="pill">Attribut</a></li>
+            <li><a href="#menu_skill" data-toggle="pill">Habileté</a></li>
+            <li><a href="#menu_game_begin" data-toggle="pill">Objet de départ</a></li>
+          </ul>
+        </li>
+        <li><a data-toggle="pill" href="#menu_message">Message important</a></li>
+      </ul>
+
       <h1>Information pour le joueur</h1>
 
       <div>
@@ -163,19 +176,6 @@
         </div>
       </div>
 
-      <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#menu_form">Formulaire</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sommaire <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#menu_attribut" data-toggle="tab">Attribut</a></li>
-            <li><a href="#menu_skill" data-toggle="tab">Habileté</a></li>
-            <li><a href="#menu_game_begin" data-toggle="tab">Objet de départ</a></li>
-          </ul>
-        </li>
-        <li><a data-toggle="tab" href="#menu_message">Message important</a></li>
-      </ul>
-
       <div class="tab-content">
         <!-- form -->
         <div id="menu_form" class="tab-pane fade in active">
@@ -215,6 +215,7 @@
 
         <!-- attribut -->
         <div id="menu_attribut" class="tab-pane fade">
+          <h1>Sommaire</h1>
           <h2>Attribut du personnage</h2>
           <div>
             <ul>
@@ -247,7 +248,8 @@
 
         <!-- skill -->
         <div id="menu_skill" class="tab-pane fade">
-          <h3>Habilité</h3>
+          <h1>Sommaire</h1>
+          <h2>Habilité</h2>
           <div>
             <span ng-show="character_skill.length == 0" style="font-weight:bold;">Aucune</span>
             <ol>
@@ -256,7 +258,7 @@
           </div>
 
           <div ng-hide="character_merite.length == 0">
-            <h3>Mérite</h3>
+            <h2>Mérite</h2>
             <ol>
               <li ng-repeat="value in character_merite track by $index" style="color:lightyellow">{{! value }}</li>
             </ol>
@@ -266,6 +268,7 @@
 
         <!-- debut de jeu -->
         <div id="menu_game_begin" class="tab-pane fade">
+          <h1>Sommaire</h1>
           <h2>Objet de début de jeu</h2>
           <h3>Objet de base</h3>
           <div>
