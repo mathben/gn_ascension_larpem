@@ -78,6 +78,10 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
     text: ""
   };
 
+  $scope.refresh_page = function () {
+    location.reload();
+  };
+
   // fill user and character schema and form
   $scope.update_character = function (e) {
     var char_rule_url = $scope.is_admin ? "/cmd/manual_admin" : "/cmd/manual";
