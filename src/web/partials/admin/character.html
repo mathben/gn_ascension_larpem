@@ -35,6 +35,13 @@
         <!--</label><br/>-->
         <br/>
         <button class="btn btn-primary" ng-print print-element-id="manual_main_content"><i class="fa fa-print"></i>Imprimer</button>
+        <br/>
+        Impression admin<br/>
+        <button class="btn btn-primary" ng-click="next_player()">Next</button>
+        <br/>
+        <span ng-show="no_player >= 0">
+          {{! no_player }} / {{! total_player }}
+        </span>
       </div>
 
       <div ng-show="player && !new_player">

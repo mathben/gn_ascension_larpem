@@ -20,6 +20,11 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   $scope.html_qr_code = "";
   $scope.url_qr_code = "";
 
+  // print
+  $scope.no_player = -1;
+  $scope.total_player = -1;
+  $scope.dom_printing_data = [];
+
   $scope.player = null;
   $scope.last_player = null;
   $scope.character = null;
@@ -1085,6 +1090,7 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
   };
 
   $scope.setCharacterData = function (value) {
+    console.debug(value);
     if (!$scope.player) {
       // no player is selected
       $scope.last_character = $scope.character = null;
@@ -1143,6 +1149,24 @@ characterApp.controller("character_ctrl", ["$scope", "$q", "$http", "$window", /
       return 0;
     }
     return $scope.character_point[name];
+  };
+
+  $scope.next_player = function () {
+    if ($scope.total_player != -1) {
+      // copy last data in memory
+
+      var elem = document.getElementById("manual_main_content");
+      var domClone = elem.cloneNode(true);
+
+      $scope.dom_printing_data.push(domClone);
+      console.debug($scope.dom_printing_data);
+    }
+
+    $scope.player = $scope.ddb_user[$scope.no_player];
+    $scope.no_player += 1;
+    if ($scope.total_player == -1) {
+      $scope.total_player = $scope.ddb_user.length - 1;
+    }
   };
 
   $scope.get_html_qr_code = function () {
