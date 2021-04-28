@@ -1,12 +1,12 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/570d01f4fcd19a0045440af5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/570d01f4fcd19a0045440af5)
 
-Character player web application for live role-playing game Traître-Lame
-=======================================================================
+Character player web application for live role-playing game Ascension
+=====================================================================
 Web software to manage character player sheet, maintenance, xp, help and communication in game.
 
 Web server in production
 ========================
-http://www.traitrelame.ca
+http://gnascension.ca
 
 INSTALL
 =======
@@ -26,7 +26,7 @@ http://127.0.0.1:8000
 
 Developper wiki
 ===============
-This project is in creation. [The first brainstorm is in french.](https://github.com/AdminTL/gestion_personnage_TL/wiki/Premier-brainstorm)
+TODO
 
 Documentation
 =============
